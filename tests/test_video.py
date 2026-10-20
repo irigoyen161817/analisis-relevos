@@ -1,11 +1,12 @@
 import json
+from pathlib import Path
 
 import cv2
 import numpy as np
 import pytest
 
 from relevos.cli import main
-from relevos.video import ErrorVideo, es_frecuencia_variable, info_video
+from relevos.video import ErrorVideo, InfoVideo, es_frecuencia_variable, info_video
 
 
 def crear_video(ruta, fps, fotogramas, tamano=(64, 48)):
@@ -61,6 +62,55 @@ def test_fichero_que_no_es_video(tmp_path):
         info_video(ruta)
 
 
+def test_video_de_un_fotograma(tmp_path):
+    ruta = crear_video(tmp_path / "v1.mp4", fps=60, fotogramas=1)
+    with pytest.raises(ErrorVideo, match="menos de 2"):
+        info_video(ruta)
+
+
+def info_sintetica(timestamps, fps_nominal=60.0):
+    return InfoVideo(
+        ruta=Path("sintetico.mp4"),
+        ancho=1920,
+        alto=1080,
+        fotogramas=len(timestamps),
+        fps_nominal=fps_nominal,
+        timestamps=np.asarray(timestamps, dtype=float),
+    )
+
+
+@pytest.mark.parametrize(
+    "timestamps",
+    [
+        [],
+        [0.0],
+        [0.0, 0.0, 0.0],  # OpenCV devuelve POS_MSEC = 0 con algunos códecs
+        [0.0, 0.1, 0.1, 0.1],  # marcas repetidas: mediana de intervalos 0
+        [0.0, 0.2, 0.1],  # desordenadas
+        [0.0, float("nan"), 0.2],
+    ],
+)
+def test_marcas_de_tiempo_no_validas(timestamps):
+    with pytest.raises(ErrorVideo):
+        info_sintetica(timestamps)
+
+
+def test_dos_fotogramas_son_validos():
+    info = info_sintetica([0.0, 1 / 60])
+    assert info.fps_real == pytest.approx(60)
+    assert not info.es_vfr
+
+
+def test_fps_nominal_desconocido_no_avisa():
+    info = info_sintetica(np.arange(120) / 60, fps_nominal=0.0)
+    assert info.avisos() == []
+
+
+def test_fps_nominal_distinto_avisa():
+    info = info_sintetica(np.arange(120) / 60, fps_nominal=30.0)
+    assert any("declara" in aviso for aviso in info.avisos())
+
+
 def test_frecuencia_constante():
     assert not es_frecuencia_variable(np.arange(100) / 60)
 
@@ -75,6 +125,14 @@ def test_frecuencia_variable_por_jitter():
     rng = np.random.default_rng(0)
     intervalos = 1 / 60 * (1 + rng.uniform(-0.3, 0.3, 99))
     assert es_frecuencia_variable(np.concatenate([[0], np.cumsum(intervalos)]))
+
+
+def test_marcas_repetidas_son_vfr():
+    assert es_frecuencia_variable(np.array([0.0, 0.0, 1 / 60, 2 / 60]))
+
+
+def test_un_solo_intervalo_no_es_vfr():
+    assert not es_frecuencia_variable(np.array([0.0, 1 / 60]))
 
 
 def test_pequeno_jitter_no_es_vfr():

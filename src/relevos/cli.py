@@ -27,7 +27,7 @@ def comando_info(args: argparse.Namespace) -> int:
             "vfr": info.es_vfr,
             "avisos": info.avisos(),
         }
-        print(json.dumps(datos, ensure_ascii=False, indent=2))
+        print(json.dumps(datos, ensure_ascii=False, indent=2, allow_nan=False))
         return 0
 
     print(f"Vídeo:        {info.ruta}")

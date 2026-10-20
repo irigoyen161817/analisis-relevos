@@ -20,7 +20,8 @@ TOLERANCIA_FPS_NOMINAL = 0.05
 
 
 class ErrorVideo(Exception):
-    """El vídeo no se puede abrir o no tiene fotogramas."""
+    """El vídeo no se puede abrir, no tiene fotogramas suficientes o sus marcas de tiempo
+    no son válidas."""
 
 
 @dataclass
@@ -30,8 +31,19 @@ class InfoVideo:
     alto: int
     fotogramas: int
     fps_nominal: float
+    """Fps que declara el fichero; OpenCV devuelve 0 si no los conoce."""
     timestamps: np.ndarray = field(repr=False)
-    """Marca de tiempo de cada fotograma, en segundos desde el primero."""
+    """Marca de tiempo de cada fotograma, en segundos desde el primero. Al menos 2 y
+    estrictamente crecientes (se comprueba al crear el objeto)."""
+
+    def __post_init__(self):
+        self.timestamps = np.asarray(self.timestamps, dtype=float)
+        if len(self.timestamps) < 2:
+            raise ErrorVideo(f"El vídeo tiene menos de 2 fotogramas: {self.ruta}")
+        if not np.all(np.isfinite(self.timestamps)) or np.any(np.diff(self.timestamps) <= 0):
+            raise ErrorVideo(
+                f"Marcas de tiempo no válidas (repetidas, a cero o no crecientes): {self.ruta}"
+            )
 
     @property
     def intervalos(self) -> np.ndarray:
@@ -40,15 +52,11 @@ class InfoVideo:
     @property
     def fps_real(self) -> float:
         """Fps a partir de la mediana de los intervalos reales entre fotogramas."""
-        if len(self.timestamps) < 2:
-            return float("nan")
         return 1.0 / float(np.median(self.intervalos))
 
     @property
     def duracion(self) -> float:
         """Duración en segundos, incluyendo el último fotograma."""
-        if len(self.timestamps) < 2:
-            return 0.0
         return float(self.timestamps[-1] - self.timestamps[0]) + 1.0 / self.fps_real
 
     @property
@@ -81,17 +89,28 @@ class InfoVideo:
 
 
 def es_frecuencia_variable(timestamps: np.ndarray, tolerancia: float = TOLERANCIA_VFR) -> bool:
-    """True si algún intervalo entre fotogramas se aleja de la mediana más que la tolerancia."""
+    """True si algún intervalo entre fotogramas se aleja de la mediana más que la tolerancia.
+
+    Con menos de 3 fotogramas solo hay un intervalo y no hay con qué compararlo: devuelve
+    False. Intervalos nulos o negativos (marcas repetidas o desordenadas) cuentan como
+    frecuencia variable.
+    """
     intervalos = np.diff(timestamps)
     if len(intervalos) < 2:
         return False
+    if np.any(intervalos <= 0):
+        return True
     mediana = np.median(intervalos)
     return bool(np.any(np.abs(intervalos - mediana) > tolerancia * mediana))
 
 
 def leer_timestamps(captura: cv2.VideoCapture) -> np.ndarray:
     """Recorre el vídeo sin decodificar las imágenes y devuelve la marca de tiempo de cada
-    fotograma en segundos, relativa al primero."""
+    fotograma en segundos, relativa al primero.
+
+    Si el vídeo está truncado, devuelve los fotogramas que se han podido leer hasta el
+    primer fallo, que pueden ser menos de los que declara el fichero.
+    """
     marcas = []
     while captura.grab():
         marcas.append(captura.get(cv2.CAP_PROP_POS_MSEC) / 1000.0)
@@ -115,8 +134,6 @@ def info_video(ruta: str | Path) -> InfoVideo:
         timestamps = leer_timestamps(captura)
     finally:
         captura.release()
-    if len(timestamps) < 2:
-        raise ErrorVideo(f"El vídeo tiene menos de 2 fotogramas: {ruta}")
     return InfoVideo(
         ruta=ruta,
         ancho=ancho,
