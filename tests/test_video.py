@@ -85,14 +85,31 @@ def info_sintetica(timestamps, fps_nominal=60.0):
         [],
         [0.0],
         [0.0, 0.0, 0.0],  # OpenCV devuelve POS_MSEC = 0 con algunos códecs
-        [0.0, 0.1, 0.1, 0.1],  # marcas repetidas: mediana de intervalos 0
-        [0.0, 0.2, 0.1],  # desordenadas
+        [0.0, 0.1, 0.1, 0.1],  # la mayoría repetidas: mediana de intervalos 0
         [0.0, float("nan"), 0.2],
     ],
 )
 def test_marcas_de_tiempo_no_validas(timestamps):
     with pytest.raises(ErrorVideo):
         info_sintetica(timestamps)
+
+
+@pytest.mark.parametrize(
+    "marcas",
+    [
+        np.insert(np.arange(120) / 60, 50, 49 / 60),  # una marca repetida
+        np.insert(np.arange(120) / 60, 50, 52 / 60),  # una marca desordenada
+    ],
+)
+def test_marcas_sueltas_no_crecientes_avisan(marcas):
+    info = info_sintetica(marcas)
+    assert info.marcas_no_crecientes == 1
+    assert info.es_vfr
+    assert info.fps_real == pytest.approx(60, rel=0.01)
+    assert info.duracion == pytest.approx(2.0, rel=0.01)
+    avisos = " ".join(info.avisos())
+    assert "repetida o desordenada" in avisos
+    assert "VFR" in avisos
 
 
 def test_dos_fotogramas_son_validos():

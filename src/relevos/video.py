@@ -33,21 +33,32 @@ class InfoVideo:
     fps_nominal: float
     """Fps que declara el fichero; OpenCV devuelve 0 si no los conoce."""
     timestamps: np.ndarray = field(repr=False)
-    """Marca de tiempo de cada fotograma, en segundos desde el primero. Al menos 2 y
-    estrictamente crecientes (se comprueba al crear el objeto)."""
+    """Marca de tiempo de cada fotograma, en segundos desde el primero.
+
+    Se comprueba al crear el objeto: al menos 2, todas finitas y con la mediana de los
+    intervalos positiva (si no, no se pueden calcular los fps). Las marcas repetidas o
+    desordenadas sueltas se admiten y se avisan como frecuencia variable.
+    """
 
     def __post_init__(self):
         self.timestamps = np.asarray(self.timestamps, dtype=float)
         if len(self.timestamps) < 2:
             raise ErrorVideo(f"El vídeo tiene menos de 2 fotogramas: {self.ruta}")
-        if not np.all(np.isfinite(self.timestamps)) or np.any(np.diff(self.timestamps) <= 0):
+        if not np.all(np.isfinite(self.timestamps)):
+            raise ErrorVideo(f"Marcas de tiempo no válidas (no numéricas): {self.ruta}")
+        if np.median(np.diff(self.timestamps)) <= 0:
             raise ErrorVideo(
-                f"Marcas de tiempo no válidas (repetidas, a cero o no crecientes): {self.ruta}"
+                f"Marcas de tiempo no válidas: la mayoría están repetidas o a cero: {self.ruta}"
             )
 
     @property
     def intervalos(self) -> np.ndarray:
         return np.diff(self.timestamps)
+
+    @property
+    def marcas_no_crecientes(self) -> int:
+        """Número de fotogramas cuya marca de tiempo repite o retrocede respecto a la anterior."""
+        return int(np.sum(self.intervalos <= 0))
 
     @property
     def fps_real(self) -> float:
@@ -57,7 +68,7 @@ class InfoVideo:
     @property
     def duracion(self) -> float:
         """Duración en segundos, incluyendo el último fotograma."""
-        return float(self.timestamps[-1] - self.timestamps[0]) + 1.0 / self.fps_real
+        return float(self.timestamps.max() - self.timestamps.min()) + 1.0 / self.fps_real
 
     @property
     def es_vfr(self) -> bool:
@@ -65,6 +76,11 @@ class InfoVideo:
 
     def avisos(self) -> list[str]:
         avisos = []
+        if self.marcas_no_crecientes:
+            avisos.append(
+                f"{self.marcas_no_crecientes} fotograma(s) con la marca de tiempo repetida o "
+                "desordenada: las medidas en esos fotogramas no serán fiables."
+            )
         if self.es_vfr:
             avisos.append(
                 "Frecuencia variable (VFR) o fotogramas perdidos: usa siempre las "
