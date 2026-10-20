@@ -45,6 +45,9 @@ A partir de ahí, cada `git commit` pasa ruff (lint y formato) y bloquea fichero
 como vídeos, y cada `git push` ejecuta los tests. Para pasarlos a mano sobre todo el repo:
 `pre-commit run --all-files`.
 
+Los mensajes de commit deben seguir el formato `[#<issue>] <descripción corta>`,
+por ejemplo `[#4] Comando info con los fps reales`. El hook rechaza el commit si no es así.
+
 Comandos sueltos:
 
 ```bash

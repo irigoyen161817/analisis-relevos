@@ -1,4 +1,4 @@
-default_install_hook_types: [pre-commit, pre-push]
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
 default_stages: [pre-commit]
 
 repos:
@@ -29,3 +29,12 @@ repos:
         pass_filenames: false
         always_run: true
         stages: [pre-push]
+
+      # Mensajes de commit: "[#<issue>] <descripción corta>".
+      # Se permiten los mensajes que genera git (Merge, Revert, fixup!/squash!/amend!).
+      - id: formato-commit
+        name: formato del mensaje de commit ([#n] descripción)
+        entry: '\A(?!\[#[0-9]+\] \S|Merge |Revert |(fixup|squash|amend)! )'
+        language: pygrep
+        args: [--multiline]
+        stages: [commit-msg]
