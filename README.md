@@ -40,6 +40,13 @@ frecuencia variable (VFR) o fotogramas perdidos, si tiene menos de 60 fps reales
 ejemplo, cámara lenta exportada a 30 fps) o si los fps que declara el fichero no son los reales.
 Úsalo con el primer vídeo de cada móvil para comprobar que sirve para medir.
 
+### Grabar una sesión
+
+Sigue el [protocolo de grabación](docs/protocolo.md): ajustes del iPhone, colocación de la
+rejilla de platillos, encuadre y procedimiento. Para apuntar los intentos en pista, imprime la
+[hoja de registro](docs/hoja_imprimible.md) y pásala después a las
+[plantillas CSV](docs/plantillas/).
+
 ## Desarrollo
 
 Activa los hooks una vez tras instalar (con el venv activado):
