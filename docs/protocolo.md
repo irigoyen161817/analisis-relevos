@@ -1,17 +1,18 @@
 # Protocolo de grabación
 
-Cómo grabar una sesión de entregas del 4x100 para que los vídeos se puedan analizar con
-`relevos`. Cada regla tiene un motivo: si se salta, alguna medida deja de ser fiable.
+Cómo grabar las entregas del 4x100 para que `relevos` las pueda analizar. La idea es que solo
+tengas que **preparar la pista y grabar**: no hace falta rellenar ninguna hoja. Todo lo demás
+(sentido de carrera, resultado de la entrega, marca usada, si la cámara se ha movido) se saca
+del propio vídeo.
 
-Para llevar a pista: [hoja imprimible](hoja_imprimible.md). Plantillas para pasarla al
-ordenador: [`plantillas/`](plantillas/).
+Cada regla de este protocolo tiene un motivo: si se salta, alguna medida deja de ser fiable.
 
 ## 1. Resumen
 
-- Una cámara **fija** (iPhone en trípode) por zona, grabando a **60 fps**.
-- Una **rejilla de 21 platillos** sobre la pista, que sirve para pasar de píxeles a metros.
-- Al empezar y al acabar, unos segundos de **pista vacía** (vídeos de calibración).
-- **Un vídeo por intento**, y una fila por intento en la hoja de registro.
+- Una cámara **fija** (iPhone en trípode) grabando a **60 fps**.
+- Una **rejilla de 21 platillos** sobre la pista, que **se queda puesta toda la sesión**. Es lo que
+  permite pasar de píxeles a metros.
+- **Un vídeo por intento**, que empieza con la pista vacía durante 1–2 s.
 
 ## 2. Material
 
@@ -22,16 +23,15 @@ ordenador: [`plantillas/`](plantillas/).
 | Disparador remoto | Bluetooth o Apple Watch: grabar sin tocar el móvil |
 | Cinta métrica de 50 m | Para colocar la rejilla |
 | 21 platillos planos por zona | En tres colores (ver [rejilla](#5-colocación-de-la-rejilla)) |
-| Hoja de registro impresa y bolígrafo | [hoja_imprimible.md](hoja_imprimible.md) |
 | Batería externa | Grabar a 4K gasta mucha batería |
 
 ## 3. Roles
 
-La sesión está pensada para dos personas además de los atletas.
+Con dos personas además de los atletas:
 
 | Rol | Tareas |
 |---|---|
-| **Cámara y hoja** | Encuadre y ajustes del iPhone, grabar y parar con el disparador, apuntar cada intento |
+| **Cámara** | Encuadre y ajustes del iPhone, grabar y parar con el disparador |
 | **Pista** (ayudante) | Colocar y revisar los platillos, mover el indicador cuando cambia la marca, avisar a los atletas, vigilar que nadie entra en plano |
 
 ## 4. Ajustes del iPhone
@@ -55,7 +55,7 @@ En **Ajustes → Cámara**:
 - **Control macro**: desactivado (cambiaría de lente al acercarse algo).
 - **Conservar ajustes**: activado, para no tener que repetirlos cada vez.
 
-En la app **Cámara**, antes del vídeo de calibración:
+En la app **Cámara**, antes del primer intento:
 
 1. Modo **Vídeo**, lente **1x** (la principal; el 0,5x deforma las rectas).
 2. Comprobar en la esquina que pone **4K · 60** (o **HD · 60**).
@@ -89,7 +89,7 @@ de la zona hasta su final, y un indicador de la marca de salida.
 ### Colores
 
 Los colores dependen de la pista. Deben contrastar con la pista y entre sí, y nunca ser blancos
-(se confunden con las líneas).
+(se confunden con las líneas). Se configuran **una vez por pista**, no en cada sesión.
 
 | Elemento | Pista azul | Pista roja |
 |---|---|---|
@@ -98,7 +98,6 @@ Los colores dependen de la pista. Deben contrastar con la pista y entre sí, y n
 | Límites de zona (0 y 30 m) e indicador | Naranja | Azul |
 
 Antes de comprar todos los platillos, comprueba los colores en tu pista (issue #5).
-Apunta los colores usados en la hoja de la sesión.
 
 ### Cómo colocarlos
 
@@ -108,9 +107,10 @@ Apunta los colores usados en la hoja de la sesión.
 4. En **curva**: medir los 5 m **solo a lo largo de la línea interior** y poner cada platillo
    exterior **justo enfrente**, en perpendicular a la calle (como las líneas de la zona). Si se
    miden por separado, las filas se desalinean porque el borde exterior es más largo.
-5. Los límites (0 y 30 m) deben coincidir con las líneas pintadas de la zona. Si no coinciden,
-   manda lo pintado: apúntalo en las notas.
-6. El **indicador de marca** se coloca cuando el receptor pone su cinta, y se mueve con ella.
+5. Los límites (0 y 30 m) deben coincidir con las líneas pintadas de la zona.
+6. El **indicador de marca** se coloca cuando el receptor pone su cinta, y se mueve con ella. Así
+   el programa mide la marca real usada sin que nadie la apunte.
+7. **No quitar ni mover la rejilla durante la sesión**: es la referencia de todos los vídeos.
 
 ## 6. Encuadre
 
@@ -121,111 +121,71 @@ Apunta los colores usados en la hoja de la sesión.
 - En **horizontal**, con el **sol a la espalda o de lado**, nunca de frente.
 - Deben verse **los 21 platillos con margen** en los bordes de la imagen.
 - No hace falta medir la posición ni la altura de la cámara: las calcula el programa a partir de
-  la rejilla. Si quieres repetir el encuadre otro día, describe en las notas dónde estaba el trípode
-  (por ejemplo, «grada, fila 3, a la altura de la salida del 200»).
+  la rejilla.
 
-## 7. Procedimiento de la sesión
+## 7. Procedimiento
 
 **Antes de empezar**
 
-1. *Cámara y hoja*: rellenar la cabecera de la sesión (fecha, pista, calle, zona, tipo de zona,
-   sentido de carrera en la imagen, colores).
-2. *Cámara y hoja*: medir el pie de los atletas nuevos (en cm, del talón a la punta, descalzos o
-   con la zapatilla con la que miden la marca) y apuntarlo en la lista de atletas.
-3. *Pista*: colocar la rejilla.
-4. *Cámara y hoja*: montar el trípode, encuadrar y aplicar los ajustes del iPhone.
-
-**Calibración inicial**
-
-5. Comprobar que la pista está **vacía** en todo el plano.
-6. Grabar **5–10 s** sin tocar nada. Apuntar el nombre del fichero (por ejemplo `IMG_1201`) como
-   `video_calibracion_inicio`.
+1. *Pista*: colocar la rejilla.
+2. *Cámara*: montar el trípode, encuadrar y aplicar los ajustes del iPhone.
 
 **Cada intento**
 
-7. *Pista*: el receptor coloca su cinta y el ayudante pone el indicador a su altura.
-8. *Cámara y hoja*: empezar a grabar **antes de que aparezca el que llega** en el plano.
-9. Parar cuando **los dos han salido de la zona**.
-10. *Cámara y hoja*: apuntar la fila: nº de intento, fichero, pareja, marca en pies, grabación y
-    resultado.
-11. *Pista*: revisar que ningún platillo se ha movido. Si alguno se ha movido, recolocarlo y anotarlo.
-12. **Cada 5 intentos**, comprobar en el iPhone que el número del último fichero coincide con la hoja.
+3. *Pista*: el receptor coloca su cinta y el ayudante pone el indicador a su altura.
+4. *Cámara*: empezar a grabar con la **pista vacía**, al menos **1–2 s antes de que aparezca el que
+   llega**. Esos primeros fotogramas son los que usa el programa para calibrar y para comprobar que
+   la cámara no se ha movido.
+5. Parar cuando **los dos han salido de la zona**.
+6. *Pista*: revisar que ningún platillo se ha movido. Si alguno se ha movido, recolocarlo en su sitio.
 
-**Si cambia la marca**: el ayudante mueve el indicador con la cinta y en la hoja se apuntan los
-nuevos pies.
-
-**Al terminar**
-
-13. Grabar otros **5 s con la pista vacía** y apuntarlo como `video_calibracion_fin`. Sirve para
-    comprobar que la cámara no se ha movido durante la sesión.
-
-### Grabación y resultado
-
-En cada intento se apuntan dos cosas distintas:
-
-- **Grabación**: `ok` o `problema` (con el motivo: «tapado», «cámara movida», «cortado», «platillo
-  movido»…). **Solo se excluyen del análisis los intentos con problema de grabación.**
-- **Resultado**, a ojo: `bueno`, `receptor_tarde`, `receptor_pronto`, `no_alcanza`,
-  `testigo_caido` o `fuera_zona`. **Todos se analizan**, también los fallidos: suelen ser los que
-  más dicen sobre dónde poner la marca.
+**Si cambia la marca**: el ayudante mueve el indicador con la cinta. No hace falta apuntar nada.
 
 ## 8. Después de la sesión
 
 1. **Pasar los vídeos al ordenador sin recomprimir**: por cable USB, con
    *Ajustes → Fotos → Transferir a Mac o PC → Mantener originales*. **Nunca** por WhatsApp,
    Telegram o similares: recomprimen el vídeo y pueden cambiar los fps.
-2. Guardarlos con esta estructura (la carpeta `data/` no se sube al repositorio):
+2. Guardar los vídeos de cada sesión en una carpeta (la carpeta `data/` no se sube al repositorio):
 
    ```
    data/
-     atletas.csv
      sesiones/
-       2026-10-25_zona2/
-         sesion.csv
-         intentos.csv
-         IMG_1201.MOV
+       2026-10-25/
          IMG_1202.MOV
+         IMG_1203.MOV
          ...
    ```
 
-3. Comprobar los vídeos de calibración y un intento:
+3. Comprobar un vídeo:
 
    ```bash
-   relevos info data/sesiones/2026-10-25_zona2/IMG_1201.MOV
+   relevos info data/sesiones/2026-10-25/IMG_1202.MOV
    ```
 
-   Deben dar unos **60 fps reales** y ningún aviso de frecuencia variable.
-4. Pasar la hoja de papel a los CSV de las [plantillas](plantillas/).
+   Debe dar unos **60 fps reales** y ningún aviso de frecuencia variable.
 
-### Ejemplo de hoja rellena
+### Opcional: atletas
 
-`sesion.csv`
+Para ver el historial de cada pareja y que la recomendación de la marca aprenda con cada intento,
+el programa necesita saber quién corre en cada vídeo; eso no se puede sacar del vídeo. Es opcional:
+sin ello, cada vídeo se evalúa igual, solo que por separado.
 
-```csv
-fecha,hora_inicio,pista,color_pista,calle,zona,tipo_zona,sentido,color_interior,color_exterior,color_limites,video_calibracion_inicio,video_calibracion_fin,condiciones,notas
-2026-10-25,17:30,Pista municipal,azul,5,2,mixta,izq-der,amarillo,verde,naranja,IMG_1201,IMG_1240,"nublado, viento flojo de cara","trípode en la grada, fila 3"
-```
+- Se indica la pareja al analizar el vídeo (por ejemplo, `--pareja ATL1-ATL2`).
+- Para dar la marca en **pies** del atleta, apunta una vez la longitud de su pie en
+  `data/atletas.csv` ([plantilla](plantillas/atletas.csv)). Sin ella, la marca se da en metros y en
+  pies de 30 cm.
 
-`atletas.csv`
-
-```csv
-alias,pie_cm,notas
-ATL1,28.5,
-ATL2,27.0,
-```
-
-`intentos.csv`
-
-```csv
-intento,fichero,hora,llega,recibe,marca_pies,grabacion,motivo_grabacion,resultado,notas
-1,IMG_1202,17:42,ATL1,ATL2,28,ok,,bueno,
-2,IMG_1203,17:46,ATL1,ATL2,28,ok,,receptor_tarde,grita tarde
-3,IMG_1204,17:50,ATL1,ATL2,29,problema,tapado,no_alcanza,el entrenador se cruzó
-```
+  ```csv
+  alias,pie_cm,notas
+  ATL1,28.5,
+  ATL2,27.0,
+  ```
 
 ## 9. Errores a evitar
 
 - Que alguien se ponga **delante de la cámara** o dentro del plano en la calle, incluido el entrenador.
+- Empezar a grabar **con el atleta ya en el plano**: el vídeo no tendrá fotogramas con la pista vacía.
 - **Platillos desplazados** por pisadas: revisarlos entre intentos.
 - **Tocar el móvil** entre vídeos: usar siempre el disparador.
 - Grabar con **poca luz** o a **contraluz**.

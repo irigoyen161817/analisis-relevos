@@ -43,9 +43,8 @@ ejemplo, cámara lenta exportada a 30 fps) o si los fps que declara el fichero n
 ### Grabar una sesión
 
 Sigue el [protocolo de grabación](docs/protocolo.md): ajustes del iPhone, colocación de la
-rejilla de platillos, encuadre y procedimiento. Para apuntar los intentos en pista, imprime la
-[hoja de registro](docs/hoja_imprimible.md) y pásala después a las
-[plantillas CSV](docs/plantillas/).
+rejilla de platillos, encuadre y procedimiento. No hace falta rellenar ninguna hoja: se prepara
+la pista, se graba un vídeo por intento y el resto se saca del propio vídeo.
 
 ## Desarrollo
 
