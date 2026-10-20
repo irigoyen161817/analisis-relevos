@@ -17,7 +17,20 @@ fix/<n>-descripcion-corta
 docs/<n>-descripcion-corta
 ```
 
+## Commits
+Formato del mensaje: `[#<issue>] <descripción corta>`, en imperativo y sin punto final.
+
+```
+[#4] Mostrar los fps reales del vídeo
+[#10] Calcular el error de reproyección por platillo
+```
+
+El hook `commit-msg` de pre-commit rechaza los mensajes que no siguen el formato
+(se permiten los que genera git: `Merge`, `Revert`, `fixup!`, `squash!`).
+
 ## Pull requests
+- El título de la PR sigue el mismo formato (`[#n] descripción`), porque con squash merge
+  se convierte en el mensaje del commit en `main`.
 - PRs pequeñas, contra `main`, con `Closes #n` en la descripción.
 - La CI (ruff + pytest) debe estar en verde antes de mergear.
 - Se mergea con **squash merge** y se borra la rama.
