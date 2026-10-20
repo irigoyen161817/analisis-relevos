@@ -1,5 +1,7 @@
 # analisis-relevos
 
+[![CI](https://github.com/irigoyen161817/analisis-relevos/actions/workflows/ci.yml/badge.svg)](https://github.com/irigoyen161817/analisis-relevos/actions/workflows/ci.yml)
+
 Herramienta que analiza en vídeo las entregas del 4x100, grabadas con un móvil fijo,
 mide cómo se hace cada pase y recomienda a qué distancia poner la marca de salida del receptor.
 
