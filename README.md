@@ -35,6 +35,18 @@ relevos --help
 
 ## Desarrollo
 
+Activa los hooks una vez tras instalar (con el venv activado):
+
+```bash
+pre-commit install
+```
+
+A partir de ahí, cada `git commit` pasa ruff (lint y formato) y bloquea ficheros grandes
+como vídeos, y cada `git push` ejecuta los tests. Para pasarlos a mano sobre todo el repo:
+`pre-commit run --all-files`.
+
+Comandos sueltos:
+
 ```bash
 ruff check .
 ruff format .
