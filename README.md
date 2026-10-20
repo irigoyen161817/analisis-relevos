@@ -31,7 +31,14 @@ Para la detección automática de atletas (fase 6): `pip install -e ".[deteccion
 
 ```bash
 relevos --help
+relevos info video.mp4          # resolución, duración, fps nominales y reales, avisos
+relevos info video.mp4 --json
 ```
+
+`relevos info` lee la marca de tiempo real de cada fotograma y avisa si el vídeo tiene
+frecuencia variable (VFR) o fotogramas perdidos, si tiene menos de 60 fps reales (por
+ejemplo, cámara lenta exportada a 30 fps) o si los fps que declara el fichero no son los reales.
+Úsalo con el primer vídeo de cada móvil para comprobar que sirve para medir.
 
 ## Desarrollo
 
