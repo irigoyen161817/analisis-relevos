@@ -1,0 +1,28 @@
+# Entorno
+venv/
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+
+# Datos y vídeos (no se versionan)
+data/
+*.mp4
+*.mov
+*.MOV
+*.avi
+
+# Modelos descargados
+*.pt
+
+# Editor / SO
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
