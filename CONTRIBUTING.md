@@ -7,6 +7,13 @@
   `deteccion`, `visualizacion`, `infra`, `datos`).
 - `bloqueado-hardware` marca lo que depende de grabar en pista o comprar material.
 - El estado se sigue en el tablero del Project «Relevos».
+- Las dependencias se escriben en la sección «Depende de» de la issue (`- #n`). La Action
+  `disponibilidad.yml` las convierte en dependencias de GitHub (*blocked by*) y rellena el campo
+  «Disponibilidad»: **Lista** si no espera a ninguna issue abierta, **Bloqueada** si sí, **Hecha** si
+  está cerrada. La pestaña «Disponibilidad» del Project agrupa por ese campo.
+- Una dependencia que sobra se quita a mano en la issue (quitar la línea no la borra).
+- La Action necesita el secret `PROJECT_TOKEN`: un token clásico con permisos `project` y
+  `public_repo`. Si caduca, la Action falla; se renueva con `gh secret set PROJECT_TOKEN`.
 
 ## Ramas
 Una rama por issue, creada desde `main`:

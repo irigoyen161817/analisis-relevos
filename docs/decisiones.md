@@ -59,7 +59,8 @@ análisis en tiempo real durante la sesión.
 *Actualizado: 2026-11-01*
 
 - **F1 Entorno**: terminada (#1, #2, #3, #4, #34, #37). Paquete, CLI, CI, hooks, plantillas,
-  `relevos info`. Añadidos después este documento y las skills de antislop (#41).
+  `relevos info`. Añadidos después este documento, las skills de antislop (#41) y la pestaña
+  «Disponibilidad» del Project (#43).
 - **F2 Grabación**: protocolo hecho (#6). Pendiente probar colores y comprar platillos (#5) y la
   primera sesión de grabación (#7).
 - **Siguiente**: F3 Calibración, empezando por el modelo de la rejilla (#8) y la calibración manual
@@ -182,6 +183,17 @@ Formato: **D-nnn · título** — fecha · issue. Decisión, motivo y alternativ
 - **Descartado**: instalar el plugin completo, porque trae las skills de UI y un servidor MCP de
   contraste que este proyecto no usa. Ver [.claude/skills/README.md](../.claude/skills/README.md).
 
+### D-014 · Disponibilidad de las issues calculada por una Action
+2026-11-01 · #43
+
+- **Decisión**: la sección «Depende de» de cada issue es la fuente. `scripts/disponibilidad.py`
+  crea las dependencias nativas (*blocked by*) y rellena el campo «Disponibilidad» del Project
+  (Lista / Bloqueada / Hecha). Lo ejecuta la Action `disponibilidad.yml` con cada cambio de issue
+  y una vez al día.
+- **Motivo**: ver de un vistazo qué se puede empezar sin repasar las dependencias a mano.
+- **Coste**: el `GITHUB_TOKEN` no escribe en Projects de usuario; hace falta un token personal
+  en el secret `PROJECT_TOKEN`, que hay que renovar cuando caduque.
+
 ## 4. Ajustes y parámetros
 
 Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva.
@@ -215,3 +227,4 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
 - **2026-10-20** — F1 completa: esqueleto, CI, hooks, plantillas, `relevos info`. Protocolo de
   grabación (#6). Se descarta la hoja de registro (D-001).
 - **2026-11-01** — Se crea este documento y se añaden las skills de antislop (#41, D-013).
+  Pestaña «Disponibilidad» en el Project y Action que la mantiene (#43, D-014).
