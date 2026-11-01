@@ -70,7 +70,9 @@ sintéticos; no hay vídeos reales en el repo.
   de la PR acaba siendo el commit en `main`. PR con `Closes #n`.
 - PRs dependientes se apilan con `gh stack` (extensión gh-stack).
 - Skills del proyecto en `.claude/skills/` (antislop: núcleo, comentarios de código y textos;
-  ver su README). Aplican también a lo que se escribe en español.
+  ver su README). Aplican también a lo que se escribe en español. **Cárgalas siempre antes de
+  escribir o editar**, sin esperar a que se pidan: `antislop` + `antislop-code` para código y
+  comentarios; `antislop` + `antislop-copywriting` para docs, issues, PRs y commits.
 - Para revisar una PR usar el subagente `revisor-pr` (`.claude/agents/revisor-pr.md`); no
   publica comentarios en GitHub salvo que se pida.
 - El repo es **público**: vídeos, sesiones y nombres reales van solo en `data/` (ignorado por
