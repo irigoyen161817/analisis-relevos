@@ -56,7 +56,7 @@ análisis en tiempo real durante la sesión.
 
 ## 1. Estado actual
 
-*Actualizado: 2026-11-01*
+*Actualizado: 2026-11-07*
 
 - **F1 Entorno**: terminada (#1, #2, #3, #4, #34, #37). Paquete, CLI, CI, hooks, plantillas,
   `relevos info`. Añadidos después este documento, las skills de antislop (#41) y la pestaña
@@ -64,7 +64,8 @@ análisis en tiempo real durante la sesión.
 - **F2 Grabación**: protocolo hecho (#6). Pendiente probar colores y comprar platillos (#5) y la
   primera sesión de grabación (#7).
 - **Siguiente**: F3 Calibración, empezando por el modelo de la rejilla (#8) y la calibración manual
-  con clics (#9). Se puede avanzar con datos sintéticos mientras no haya vídeos reales.
+  con clics (#9). El diseño de #8 está cerrado (D-015, D-016, D-017). Se puede avanzar con datos
+  sintéticos mientras no haya vídeos reales.
 
 ## 2. Hoja de ruta
 
@@ -194,6 +195,45 @@ Formato: **D-nnn · título** — fecha · issue. Decisión, motivo y alternativ
 - **Coste**: el `GITHUB_TOKEN` no escribe en Projects de usuario; hace falta un token personal
   en el secret `PROJECT_TOKEN`, que hay que renovar cuando caduque.
 
+### D-015 · Coordenadas de pista y platillos centrados sobre la línea
+2026-11-07 · #8
+
+- **Decisión**: `s = 0` en el inicio de la zona y positiva en el sentido de carrera; en curva se
+  mide a lo largo de la línea interior. `d = 0` en el borde interior y positiva hacia fuera. Los
+  platillos van centrados sobre la línea, así que la fila interior está en `d = 0` y la exterior
+  en `d = 1,22`. La rejilla tiene solo los 20 platillos fijos: el indicador de marca se localiza
+  en cada vídeo (#18).
+- **Motivo**: con «sobre la línea o justo por fuera» quedaban ±10 cm de duda en `d`. A la
+  homografía no le afecta (en recta solo reescala `d`), pero a `solvePnP` (D-006) sí.
+- **Descartado**: platillo tocando la línea por fuera con su radio como parámetro.
+
+### D-016 · `sesion.json` con una lista de calibraciones
+2026-11-07 · #8, #13
+
+- **Decisión**: `sesion.json` (en la carpeta de los vídeos, generado por el programa) tiene un
+  campo `version` y una lista de calibraciones. Cada una guarda `id`, `creada`, `video`,
+  `instante_ms`, `resolucion`, los parámetros de la rejilla, los píxeles de cada platillo (o
+  `null` si no se ve) y el nombre del PNG del fotograma de referencia, que se guarda al lado. Los
+  píxeles van en la resolución nativa y es un error aplicarlos a un vídeo de otra resolución. Qué
+  calibración usa cada vídeo lo calcula #13 en cada análisis; no se guarda.
+- **Motivo**: si se golpea el trípode o se cambia de zona, se recalibra sin perder la calibración
+  de los vídeos anteriores. Guardar la rejilla en cada calibración evita que una sesión antigua se
+  lea con otros valores por defecto. El PNG le sirve a #13 para comparar features (sin #27 no se
+  pueden volver a detectar platillos) y permite revisar los clics a ojo.
+- **Descartado**: una sola calibración por carpeta que se sobrescribe; coordenadas normalizadas
+  (esconderían cambios de encuadre); tabla vídeo → calibración (se desfasa al borrar o renombrar
+  vídeos); pydantic (bastan `dataclasses` + `json`, como `InfoVideo`). La configuración de
+  colores de pista sale de #8 y pasa a #27, que es el único que la usa.
+
+### D-017 · La fila interior queda a la izquierda del sentido de carrera
+2026-11-07 · #8, #9
+
+- **Decisión**: la rejilla incluye esta regla y la validación de la calibración da error si la
+  homografía sale reflejada (determinante negativo).
+- **Motivo**: en el 4x100 se corre en sentido antihorario y una cámara real no refleja la imagen.
+  Si alguien marca las filas al revés, `d` sale invertida y la pose de #11 es absurda; así se
+  detecta al calibrar.
+
 ## 4. Ajustes y parámetros
 
 Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva.
@@ -204,6 +244,7 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
 | Resolución | 4K60 HEVC; 1080p60 «Más compatible» si no se lee | protocolo §4 |
 | Platillos por zona | 21 (10 + 10 + indicador) | D-004 |
 | Separación de platillos | 5 m, de −15 a 30 m | D-004 |
+| Posición de las filas | Centradas sobre la línea: `d = 0` (interior) y `d = 1,22` (exterior) | D-015 |
 | Longitud de la zona | 30 m (+15 m previos con la marca) | protocolo §5 |
 | Ancho de calle | 1,22 m | protocolo §5 |
 | Altura de la cámara | Lo más alta posible; mínimo 2–3 m | protocolo §6 |
@@ -228,3 +269,6 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
   grabación (#6). Se descarta la hoja de registro (D-001).
 - **2026-11-01** — Se crea este documento y se añaden las skills de antislop (#41, D-013).
   Pestaña «Disponibilidad» en el Project y Action que la mantiene (#43, D-014).
+- **2026-11-07** — Diseño de #8 cerrado: coordenadas y platillos sobre la línea (D-015),
+  `sesion.json` con varias calibraciones (D-016) y regla de la fila interior (D-017). Los colores
+  de pista pasan a #27 y el indicador a #18. Protocolo §5: platillos centrados sobre la línea.

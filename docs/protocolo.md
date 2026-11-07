@@ -76,11 +76,9 @@ de la zona hasta su final, y un indicador de la marca de salida.
 
  −15   −10    −5     0     5    10    15    20    25    30   (m)
                      │◀────────── zona de entrega (30 m) ──────────▶│
-  ●     ●     ●     ◆     ●     ●     ●     ●     ●     ◆     fila exterior  (verde)
- ─────────────────────────────────────────────────────────────────  borde exterior de la calle
+ ─●─────●─────●─────◆─────●─────●─────●─────●─────●─────◆─────────  fila exterior (verde), sobre el borde exterior
                          calle (1,22 m)
- ─────────────────────────────────────────────────────────────────  borde interior de la calle
-  ○     ○     ○     ◆     ○     ○     ○     ○     ○     ◆     fila interior  (amarillo)
+ ─○─────○─────○─────◆─────○─────○─────○─────○─────○─────◆─────────  fila interior (amarillo), sobre el borde interior
 
       ◆ indicador de marca: 30–50 cm por fuera de la fila exterior, a la altura de la cinta del atleta
  ○ amarillo   ● verde flúor   ◆ tercer color (límites de zona e indicador)
@@ -102,7 +100,8 @@ Antes de comprar todos los platillos, comprueba los colores en tu pista (issue #
 ### Cómo colocarlos
 
 1. Platillos **planos**, no conos altos: el programa usa la base como referencia.
-2. **Sobre las líneas de la calle o justo por fuera**, nunca dentro, para que nadie los pise.
+2. **Centrados sobre la línea** de cada borde de la calle. El programa supone que el centro del
+   platillo está en la línea; si se ponen por fuera, la posición de la cámara sale desviada.
 3. En **recta**: medir los 5 m con la cinta a lo largo de cada línea.
 4. En **curva**: medir los 5 m **solo a lo largo de la línea interior** y poner cada platillo
    exterior **justo enfrente**, en perpendicular a la calle (como las líneas de la zona). Si se
