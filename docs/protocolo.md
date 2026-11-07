@@ -170,7 +170,23 @@ Para ver el historial de cada pareja y que la recomendación de la marca aprenda
 el programa necesita saber quién corre en cada vídeo; eso no se puede sacar del vídeo. Es opcional:
 sin ello, cada vídeo se evalúa igual, solo que por separado.
 
-- Se indica la pareja al analizar el vídeo (por ejemplo, `--pareja ATL1-ATL2`).
+- Se indica moviendo cada vídeo a una subcarpeta con el nombre de la pareja: primero el que
+  entrega y después el que recibe (`ATL1-ATL2` es «ATL1 entrega a ATL2»). Se hace en casa, viendo
+  las miniaturas; no hace falta apuntar nada en la pista. Los vídeos que se quedan en la carpeta
+  de la sesión cuentan como pareja desconocida.
+
+  ```
+  data/
+    sesiones/
+      2026-10-25/
+        sesion.json        (lo crea el programa)
+        ATL1-ATL2/
+          IMG_1202.MOV
+        ATL3-ATL4/
+          IMG_1203.MOV
+  ```
+
+- También se puede forzar al analizar (`--pareja ATL1-ATL2`).
 - Para dar la marca en **pies** del atleta, apunta una vez la longitud de su pie en
   `data/atletas.csv` ([plantilla](plantillas/atletas.csv)). Sin ella, la marca se da en metros y en
   pies de 30 cm.
@@ -195,4 +211,7 @@ sin ello, cada vídeo se evalúa igual, solo que por separado.
 
 - En el repositorio solo hay plantillas vacías y ejemplos con **alias** (ATL1, ATL2…).
 - Los vídeos y, si se usan, los nombres reales se guardan solo en `data/`, que no se sube.
-- Si hay **menores**, hay que tener el consentimiento de sus padres o tutores para grabarlos.
+- Antes de la primera grabación, pedir **consentimiento** a cada atleta (a sus padres o tutores si
+  es menor). Contarle que los vídeos solo se usan para analizar las entregas, que no se publican y
+  que se guardan en `data/`.
+- Si un atleta lo pide, se borran sus vídeos y sus resultados.
