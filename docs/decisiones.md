@@ -129,14 +129,14 @@ Formato: **D-nnn · título** — fecha · issue. Decisión, motivo y alternativ
 - **Motivo**: funciona igual en recta y en curva; no hay que modelar la curva.
 
 ### D-006 · Pose de la cámara con `solvePnP`
-2026-10-20 · #11
+2026-10-20 · #11 · *enfoque precisado por D-025*
 
 - **Decisión**: la posición y altura de la cámara se calculan a partir de la rejilla, no se miden.
   Sirven para proyectar puntos que no están en el suelo (cadera ≈ 1 m, manos) y corregir el
   paralaje.
 
 ### D-007 · Calibración y control de cámara con los primeros fotogramas
-2026-10-20 · #6, #13
+2026-10-20 · #6, #13 · *«pista vacía» precisada por D-024*
 
 - **Decisión**: cada vídeo empieza con 1–2 s de pista vacía; se usan para calibrar y para detectar
   si la cámara se ha movido respecto a la referencia de la sesión (`sesion.json`, generado por el
@@ -157,7 +157,7 @@ Formato: **D-nnn · título** — fecha · issue. Decisión, motivo y alternativ
 - Caso de prueba: 9 m/s, 0,2 s, 2,9 s en 20 m → ≈ 9,1 m ≈ 30 pies.
 
 ### D-010 · Detección automática con YOLO-pose como extra opcional
-2026-10-20 · #22, #23
+2026-10-20 · #22, #23 · *roles precisados por D-026*
 
 - **Decisión**: ultralytics (YOLO-pose + ByteTrack/BoT-SORT) en el extra `[deteccion]`, no en las
   dependencias base. Roles asignados solos: receptor = parado cerca de la marca al inicio.
@@ -313,6 +313,39 @@ Formato: **D-nnn · título** — fecha · issue. Decisión, motivo y alternativ
 - **Motivo**: con esos puntos salen todas las medidas del modelo (D-019, D-020, D-021) sin marcar a
   los atletas fotograma a fotograma.
 
+### D-024 · «Pista vacía» quiere decir sin el que llega
+2026-11-07 · #48, #9, #13
+
+- **Decisión**: en los primeros fotogramas de cada vídeo el receptor puede estar ya en su sitio,
+  sin pisar ni tapar platillos. Lo que no puede haber es el que llega. Si en el fotograma de
+  calibración el receptor tapa algún platillo, se salta (`null`, D-016). #13 compara features y
+  tolera que el receptor esté.
+- **Motivo**: el primer clic de D-023 es el pie del receptor parado, y pedirle que se aparte en
+  cada intento no es realista.
+
+### D-025 · Pose de la cámara y forma de la pista ajustadas a la vez
+2026-11-07 · #48, #11
+
+- **Decisión**: #11 busca a la vez la pose y la focal de la cámara y la forma de la pista (radio de
+  la curva y punto donde empieza la recta; la recta es el caso de radio infinito) que mejor
+  reproyectan los 20 platillos. Tests sintéticos en recta, curva y zona mixta; #12 mide el error.
+- **Motivo**: `solvePnP` necesita posiciones cartesianas y en curva `s` es un arco. Las tres zonas
+  del 4x100 mezclan curva y recta, y la focal del iPhone no se mide en ningún sitio. Con 20
+  puntos para unos 9 parámetros hay margen.
+- **Descartado**: suponer la geometría oficial (exige saber la calle, contra D-001, y contradice
+  el «no suponer geometría» de #10); `solvePnP` con solo los 4 platillos del tramo cercano (pose
+  ruidosa).
+
+### D-026 · Roles de los atletas con la calibración
+2026-11-07 · #48, #22
+
+- **Decisión**: el receptor es la persona parada dentro de la calle (`0 ≤ d ≤ 1,22`) en los
+  primeros fotogramas; el que llega es quien entra corriendo en la calle desde atrás (`s < −15`, o
+  al menos por detrás de la marca). Se ignora a quien esté fuera de la calle (entrenador, ayudante,
+  otras calles).
+- **Motivo**: D-010 decía «parado cerca de la marca», pero la marca está unos 9 m por detrás del
+  receptor: es donde pisa el que llega.
+
 ## 4. Ajustes y parámetros
 
 Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva.
@@ -365,3 +398,5 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
   Protocolo: carpeta por pareja y consentimiento.
 - **2026-11-07** — Docs e issues puestas al día con D-015 a D-023 (#48). `CLAUDE.md` pide tener
   en cuenta este documento en cualquier tarea. #14 pasa a depender de la prueba de encuadre (#5).
+  «Pista vacía» sin el que llega (D-024), pose y forma de la pista ajustadas a la vez (D-025) y
+  roles con la calibración (D-026).

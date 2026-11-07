@@ -137,7 +137,8 @@ Antes de comprar todos los platillos, comprueba los colores en tu pista (issue #
 3. *Pista*: el receptor coloca su cinta y el ayudante pone el indicador a su altura.
 4. *Cámara*: empezar a grabar con la **pista vacía**, al menos **1–2 s antes de que aparezca el que
    llega**. Esos primeros fotogramas son los que usa el programa para calibrar y para comprobar que
-   la cámara no se ha movido.
+   la cámara no se ha movido. El receptor puede estar ya en su sitio, siempre que no pise ni tape
+   ningún platillo.
 5. Parar cuando **los dos han salido de la zona**.
 6. *Pista*: revisar que ningún platillo se ha movido. Si alguno se ha movido, recolocarlo en su sitio.
 
@@ -203,7 +204,7 @@ sin ello, cada vídeo se evalúa igual, solo que por separado.
 ## 9. Errores a evitar
 
 - Que alguien se ponga **delante de la cámara** o dentro del plano en la calle, incluido el entrenador.
-- Empezar a grabar **con el atleta ya en el plano**: el vídeo no tendrá fotogramas con la pista vacía.
+- Empezar a grabar **con el que llega ya en el plano**: el vídeo no tendrá fotogramas con la pista vacía.
 - **Platillos desplazados** por pisadas: revisarlos entre intentos.
 - **Tocar el móvil** entre vídeos: usar siempre el disparador.
 - Grabar con **poca luz** o a **contraluz**.
