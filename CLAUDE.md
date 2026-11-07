@@ -14,10 +14,14 @@ marca usada, resultado de la entrega, si la cámara se movió) se infiere; solo 
 y la longitud del pie son opcionales. La hoja de ruta va primero en manual (F3–F5: calibración y
 eventos con clics) y automatiza después (F6 «Análisis automático», F8 «Historial y extras»).
 
-**Contexto del proyecto**: `docs/decisiones.md` recoge el estado actual, la hoja de ruta, las
-decisiones técnicas (D-001…), los parámetros vigentes y las preguntas abiertas. Léelo al empezar
-una sesión. Cuando se tome una decisión, cambie un parámetro o se cierre una issue, actualízalo
-en la misma rama (decisión nueva en vez de borrar la antigua; línea en la bitácora).
+**Contexto del proyecto**: `docs/decisiones.md` recoge la idea general del proyecto: objetivo,
+estado actual, hoja de ruta, decisiones técnicas agrupadas por tema (D-01…D-11), parámetros
+vigentes y preguntas abiertas. Léelo al empezar una sesión y tenlo en cuenta en **cualquier tarea** (código, issues,
+docs, revisiones): lo que se haga tiene que encajar con sus decisiones y parámetros. Si una tarea
+choca con una decisión o la issue dice otra cosa que el documento, avisa antes de seguir en vez
+de elegir por tu cuenta. Cuando se tome una decisión, cambie un parámetro o se cierre una issue,
+actualízalo en la misma rama: se reescribe la decisión vigente (o se añade una D-nn si es un
+tema nuevo) y se añade una línea a la bitácora.
 
 ## Comandos
 
@@ -54,9 +58,11 @@ mensaje a stderr y código 1. Las salidas `--json` usan `ensure_ascii=False, all
   devuelve como avisos en `avisos()`, no como error.
 
 Diseño previsto para las fases siguientes (ver issues por milestone): homografía por tramos de la
-rejilla a coordenadas de pista (s, d), `solvePnP` para la pose de la cámara (no se mide a mano),
-suavizado Savitzky-Golay de trayectorias, y modelo de marca
-`T = tr + t_receptor(L)`, `marca = v·T − L + d_libre`.
+rejilla a coordenadas de pista (s, d), pose de la cámara ajustada junto con la forma de la
+pista (no se mide a mano), suavizado Savitzky-Golay de trayectorias, y modelo de marca
+`T = tr + t_receptor(L)`, `marca = v·T − L + d_libre`, con `v` media del que llega entre la
+marca y el pase. El detalle de la rejilla, la calibración, `sesion.json`, los resultados, los
+clics del MVP y el modelo está en D-03 a D-09.
 
 Tests con vídeos sintéticos generados en el propio test (`cv2.VideoWriter`, mp4v) y datos
 sintéticos; no hay vídeos reales en el repo.

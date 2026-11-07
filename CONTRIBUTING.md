@@ -38,7 +38,10 @@ El hook `commit-msg` de pre-commit rechaza los mensajes que no siguen el formato
 ## Pull requests
 - El título de la PR sigue el mismo formato (`[#n] descripción`), porque con squash merge
   se convierte en el mensaje del commit en `main`.
-- PRs pequeñas, contra `main`, con `Closes #n` en la descripción.
+- PRs pequeñas, contra `main`, con `Closes #n` en la descripción. Si la PR no termina la issue
+  (por ejemplo, un diseño que se deja por escrito antes de implementarlo), `Refs #n`.
+- Lo que se haga tiene que encajar con las decisiones y parámetros de
+  [docs/decisiones.md](docs/decisiones.md); si cambia alguno, se actualiza en la misma PR.
 - La CI (ruff + pytest) debe estar en verde antes de mergear.
 - Se mergea con **squash merge** y se borra la rama.
 - No se hace push directo a `main`.
