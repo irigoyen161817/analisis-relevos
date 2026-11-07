@@ -114,6 +114,9 @@ Antes de comprar todos los platillos, comprueba los colores en tu pista (issue #
 ## 6. Encuadre
 
 - Hay que cubrir unos **45 m**: los 15 m previos con la marca y los 30 m de la zona.
+- **Pendiente de probar en pista (#5)**: con la lente 1x, que cubre unos 70° en horizontal, hay
+  que estar a unos 35 m de la calle para que entren los 45 m. La posición de la cámara y la lente
+  de cada zona se fijarán aquí después de esa prueba.
 - Cámara **lo más alta posible**: la grada es lo ideal; como mínimo 2–3 m. Desde abajo, un píxel
   de error son muchos centímetros.
 - **Por fuera** de la pista y **centrada** respecto a esos 45 m.

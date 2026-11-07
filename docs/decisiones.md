@@ -28,7 +28,7 @@ la marca se ajusta a ojo. `relevos` la mide en vídeo y dice cuánto moverla.
 rellenar nada:
 
 ```
-marca usada: 28 pies · pase a 21 m de la zona · recomendación: alejar 1,5 pies
+marca usada: 28 pies · pase a 23 m de la zona · recomendación: acercar 1,5 pies (para 8,6 m/s)
 ```
 
 **A qué se aspira**, por etapas:
@@ -52,7 +52,7 @@ marca usada: 28 pies · pase a 21 m de la zona · recomendación: alejar 1,5 pie
 - **Privacidad**: el repo es público. Vídeos y nombres reales solo en `data/`.
 
 **Fuera del alcance (por ahora)**: grabar con varias cámaras o con la cámara en movimiento, y el
-análisis en tiempo real durante la sesión.
+análisis en directo mientras se corre. Analizar entre intentos sí es objetivo de F6 (D-018).
 
 ## 1. Estado actual
 
@@ -77,7 +77,7 @@ rellenar nada (ver D-001 y D-002).
 |---|---|---|
 | F1 Entorno | Esqueleto, CI, hooks, plantillas, `relevos info` | #1–#4, #34, #37 (cerradas) |
 | F2 Grabación | Protocolo, colores de platillos, primera sesión | #5, #6 (cerrada), #7 |
-| F3 Calibración | Rejilla y configuración, clics en platillos, homografía por tramos, `solvePnP`, validación leave-one-out, cámara movida, (Plan B) distorsión 0,5x | #8–#14 |
+| F3 Calibración | Rejilla y `sesion.json`, clics en platillos, homografía por tramos, `solvePnP`, validación leave-one-out, cámara movida, (Plan B) distorsión 0,5x | #8–#14 |
 | F4 Eventos manuales | Visor fotograma a fotograma, marcado de eventos y posiciones | #15, #16 |
 | F5 Métricas y marca | Tiempos, distancias, modelo de marca, ajuste por intento, `relevos analizar` (MVP) | #17–#21 |
 | F6 Análisis automático | YOLO-pose + tracking, suavizado, eventos automáticos, platillos por color | #22–#24, #27 |
@@ -363,3 +363,5 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
   objetivos y juicio de cada intento (D-019), `v` y `tr` (D-020), clasificación y ajuste por
   sesión (D-021), pareja por subcarpeta y `resultado.json` (D-022), clics del MVP (D-023).
   Protocolo: carpeta por pareja y consentimiento.
+- **2026-11-07** — Docs e issues puestas al día con D-015 a D-023 (#48). `CLAUDE.md` pide tener
+  en cuenta este documento en cualquier tarea. #14 pasa a depender de la prueba de encuadre (#5).

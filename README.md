@@ -8,7 +8,7 @@ mide cómo se hace cada pase y recomienda a qué distancia poner la marca de sal
 Resultado tras cada intento (objetivo):
 
 ```
-marca usada: 28 pies · pase a 21 m de la zona · recomendación: alejar 1,5 pies
+marca usada: 28 pies · pase a 23 m de la zona · recomendación: acercar 1,5 pies (para 8,6 m/s)
 ```
 
 ## Instalación
