@@ -6,8 +6,9 @@ sesión nueva.
 
 **Cómo mantenerlo**
 
-- Cuando se tome una decisión técnica, se añade una entrada en [Decisiones](#3-decisiones) (no se
-  borran: si cambia, se marca como *sustituida por D-xxx* y se añade la nueva).
+- [Decisiones](#3-decisiones) describe el estado vigente, agrupado por tema. Si una decisión
+  cambia, se reescribe (con lo descartado en su apartado) y se añade una línea a la
+  [Bitácora](#6-bitácora); el texto anterior queda en git. Un tema nuevo es una D-nn nueva.
 - Cuando cambie un valor (fps, distancias, umbrales, colores…), se actualiza
   [Ajustes](#4-ajustes-y-parámetros).
 - Al cerrar una issue o terminar una sesión de trabajo, se actualiza [Estado](#1-estado-actual) y
@@ -43,16 +44,17 @@ marca usada: 28 pies · pase a 23 m de la zona · recomendación: acercar 1,5 pi
 
 **Principios que no se negocian**
 
-- **Cero datos a mano**: lo que sale del vídeo no se pregunta (D-001). Solo son opcionales la
+- **Cero datos a mano**: lo que sale del vídeo no se pregunta (D-01). Solo son opcionales la
   pareja y el pie.
 - **Medidas fiables y con su error**: tiempos reales de cada fotograma, calibración validada y
   avisos cuando algo no es de fiar, antes que un número bonito.
 - **Montaje barato y repetible**: un iPhone, un trípode y platillos. Nada de material
   especializado.
-- **Privacidad**: el repo es público. Vídeos y nombres reales solo en `data/`.
+- **Privacidad**: el repo es público. Vídeos y nombres reales solo en `data/`, con el
+  consentimiento de cada atleta (protocolo §10).
 
 **Fuera del alcance (por ahora)**: grabar con varias cámaras o con la cámara en movimiento, y el
-análisis en directo mientras se corre. Analizar entre intentos sí es objetivo de F6 (D-018).
+análisis en directo mientras se corre. Analizar entre intentos sí es objetivo de F6 (D-01).
 
 ## 1. Estado actual
 
@@ -64,14 +66,14 @@ análisis en directo mientras se corre. Analizar entre intentos sí es objetivo 
 - **F2 Grabación**: protocolo hecho (#6). Pendiente probar colores y comprar platillos (#5) y la
   primera sesión de grabación (#7).
 - **Siguiente**: F3 Calibración, empezando por el modelo de la rejilla (#8) y la calibración manual
-  con clics (#9). El diseño de #8 está cerrado (D-015, D-016, D-017) y el del modelo y el flujo
-  del MVP también (D-018 a D-023). Se puede avanzar con datos sintéticos mientras no haya vídeos
+  con clics (#9). El diseño de la rejilla, la calibración, el modelo y el flujo del MVP está
+  cerrado (D-03 a D-09). Se puede avanzar con datos sintéticos mientras no haya vídeos
   reales. Antes de comprar platillos, probar el encuadre en #5.
 
 ## 2. Hoja de ruta
 
 Primero todo en manual (clics), después se automatiza. El objetivo final es subir un vídeo sin
-rellenar nada (ver D-001 y D-002).
+rellenar nada (D-01).
 
 | Fase | Contenido | Issues |
 |---|---|---|
@@ -86,265 +88,172 @@ rellenar nada (ver D-001 y D-002).
 
 ## 3. Decisiones
 
-Formato: **D-nnn · título** — fecha · issue. Decisión, motivo y alternativas descartadas.
+Formato: **D-nn · título** · issues. Qué se ha decidido (estado vigente), por qué y qué se descartó.
 
-### D-001 · Subir el vídeo sin rellenar nada
-2026-10-20 · #6, #8
+### D-01 · Producto: subir el vídeo sin rellenar nada
+#6, #8, #46
 
 - **Decisión**: todo lo que se pueda sacar del vídeo se infiere (sentido de carrera, tipo de zona,
   calibración, marca usada, resultado de la entrega, cámara movida). Solo son opcionales la pareja
-  de atletas (para historial) y la longitud del pie (para dar la marca en pies).
-- **Motivo**: rellenar hojas en pista no es realista; el usuario quiere subir el vídeo y ya.
-- **Descartado**: hoja de registro por sesión e intento.
+  (para historial) y la longitud del pie (para dar la marca en pies). Primero se hace todo con
+  clics (F3–F5) y después se automatiza (F6, F8). En el MVP los vídeos se analizan en casa,
+  después de la sesión, y llegan por cable USB. El objetivo de F6 es analizar entre intentos, con
+  un portátil en la pista y 1–2 minutos por intento, subiendo el vídeo desde Safari a una página
+  servida por el portátil si iOS no lo recomprime (#7).
+- **Motivo**: rellenar hojas en pista no es realista. El MVP manual da algo medible pronto y una
+  referencia para validar lo automático. La marca sirve más si se corrige en la misma sesión, pero
+  con clics no da tiempo entre intentos.
+- **Descartado**: hoja de registro por sesión e intento; analizar en el propio iPhone.
 
-### D-002 · Manual primero, automatizar después
-2026-10-20
+### D-02 · Grabación: cámara fija a 60 fps y primeros fotogramas sin el que llega
+#4, #6, #13, #14
 
-- **Decisión**: F3–F5 se hacen con clics (calibración y eventos); F6 y F8 automatizan.
-- **Motivo**: tener un MVP medible pronto y una referencia manual para validar lo automático.
-
-### D-003 · Cámara fija a 60 fps con marcas de tiempo reales
-2026-10-20 · #4
-
-- **Decisión**: iPhone fijo en trípode, 4K60 (o 1080p60). En el código se usan siempre las marcas
-  de tiempo reales de cada fotograma (`InfoVideo.timestamps`), nunca `índice / fps`.
+- **Decisión**: iPhone fijo en trípode, 4K60 (o 1080p60), con la lente principal 1x; el 0,5x con
+  corrección de distorsión (#14) solo si no hay forma de alejarse. En el código se usan siempre
+  las marcas de tiempo reales de cada fotograma (`InfoVideo.timestamps`), nunca `índice / fps`; lo
+  dudoso (VFR, < 50 fps, fps nominales ≠ reales) se avisa, no da error. Cada vídeo empieza con
+  1–2 s sin el que llega en plano: sirven para calibrar y para detectar si la cámara se ha movido.
+  El receptor puede estar ya en su sitio si no pisa ni tapa platillos.
 - **Motivo**: 60 fps reducen a la mitad el error de la reacción frente a 30; los móviles graban
-  con frecuencia variable, así que el índice no da el tiempo real.
-- Lo dudoso (VFR, < 50 fps, fps nominales ≠ reales) se avisa, no da error.
+  con frecuencia variable. El 0,5x deforma las rectas. Pedir al receptor que se aparte en cada
+  intento no es realista, y el primer clic del MVP (D-07) es su pie parado.
 
-### D-004 · Rejilla de 21 platillos como referencia métrica
-2026-10-20 · #6, #8
+### D-03 · Rejilla de platillos y coordenadas de pista
+#5, #6, #8, #18
 
-- **Decisión**: por zona, 10 platillos en cada borde de la calle cada 5 m de −15 a 30 m, más un
-  indicador de marca. La rejilla se queda puesta toda la sesión. En curva se mide solo a lo largo
-  de la línea interior y el exterior se pone enfrente.
-- **Motivo**: da puntos de suelo conocidos para pasar de píxeles a metros sin suponer la geometría
-  de la pista. El indicador permite medir la marca real usada sin apuntarla.
-
-### D-005 · Homografía por tramos a coordenadas de pista (s, d)
-2026-10-20 · #10
-
-- **Decisión**: una homografía por cada tramo de 5 m (cuadrilátero entre pares interior/exterior
-  consecutivos). Coordenadas: `s` a lo largo de la calle y `d` desde el borde.
-- **Motivo**: funciona igual en recta y en curva; no hay que modelar la curva.
-
-### D-006 · Pose de la cámara con `solvePnP`
-2026-10-20 · #11 · *enfoque precisado por D-025*
-
-- **Decisión**: la posición y altura de la cámara se calculan a partir de la rejilla, no se miden.
-  Sirven para proyectar puntos que no están en el suelo (cadera ≈ 1 m, manos) y corregir el
-  paralaje.
-
-### D-007 · Calibración y control de cámara con los primeros fotogramas
-2026-10-20 · #6, #13 · *«pista vacía» precisada por D-024*
-
-- **Decisión**: cada vídeo empieza con 1–2 s de pista vacía; se usan para calibrar y para detectar
-  si la cámara se ha movido respecto a la referencia de la sesión (`sesion.json`, generado por el
-  programa).
-
-### D-008 · Colores de platillos configurables por pista
-2026-10-20 · #5, #8
-
-- **Decisión**: los colores no están fijos en el código; se configuran una vez por pista. Como
-  mucho 3 colores, nunca blanco ni el color de la pista.
-- **Motivo**: la pista de pruebas es azul y otras son rojas; el naranja se confunde con el rojo.
-
-### D-009 · Modelo de la marca de salida
-2026-10-20 · #19
-
-- **Decisión**: `T = tr + t_receptor(L)`, `marca = v·T − L + d_libre`. Se da en pies del atleta si
-  se conoce su pie (`data/atletas.csv`); si no, en metros y en pies de 30 cm.
-- Caso de prueba: 9 m/s, 0,2 s, 2,9 s en 20 m → ≈ 9,1 m ≈ 30 pies.
-
-### D-010 · Detección automática con YOLO-pose como extra opcional
-2026-10-20 · #22, #23 · *roles precisados por D-026*
-
-- **Decisión**: ultralytics (YOLO-pose + ByteTrack/BoT-SORT) en el extra `[deteccion]`, no en las
-  dependencias base. Roles asignados solos: receptor = parado cerca de la marca al inicio.
-  Trayectorias suavizadas con Savitzky-Golay (o Kalman) sobre `s`.
-
-### D-011 · Lente 1x; el 0,5x solo como Plan B
-2026-10-20 · #6, #14
-
-- **Decisión**: grabar con la lente principal. Corregir la distorsión del gran angular
-  (`calibrateCamera`) solo si no hay forma de alejarse.
-
-### D-012 · Flujo de trabajo del repo
-2026-10-20 · #2, #3, #37
-
-- **Decisión**: una issue por unidad de trabajo, ramas `feat|fix|docs/<n>-slug`, commits y PR
-  `[#n] descripción`, solo squash merge, CI con ruff + pytest en 3.10–3.12, hooks de pre-commit.
-  Todo en español. Detalle en [CONTRIBUTING.md](../CONTRIBUTING.md).
-
-### D-013 · Skills de antislop para Claude, sin las de interfaz
-2026-11-01 · #41
-
-- **Decisión**: se copian a `.claude/skills/` las skills `antislop`, `antislop-code` y
-  `antislop-copywriting` (v3.2.25, MIT), en modo *during* por defecto.
-- **Motivo**: evitar comentarios de relleno y textos con pinta de IA en código, docs e issues.
-- **Descartado**: instalar el plugin completo, porque trae las skills de UI y un servidor MCP de
-  contraste que este proyecto no usa. Ver [.claude/skills/README.md](../.claude/skills/README.md).
-
-### D-014 · Disponibilidad de las issues calculada por una Action
-2026-11-01 · #43
-
-- **Decisión**: la sección «Depende de» de cada issue es la fuente. `scripts/disponibilidad.py`
-  crea las dependencias nativas (*blocked by*) y rellena el campo «Disponibilidad» del Project
-  (Lista / Bloqueada / Hecha). Lo ejecuta la Action `disponibilidad.yml` con cada cambio de issue
-  y una vez al día.
-- **Motivo**: ver de un vistazo qué se puede empezar sin repasar las dependencias a mano.
-- **Coste**: el `GITHUB_TOKEN` no escribe en Projects de usuario; hace falta un token personal
-  en el secret `PROJECT_TOKEN`, que hay que renovar cuando caduque.
-
-### D-015 · Coordenadas de pista y platillos centrados sobre la línea
-2026-11-07 · #8
-
-- **Decisión**: `s = 0` en el inicio de la zona y positiva en el sentido de carrera; en curva se
-  mide a lo largo de la línea interior. `d = 0` en el borde interior y positiva hacia fuera. Los
-  platillos van centrados sobre la línea, así que la fila interior está en `d = 0` y la exterior
-  en `d = 1,22`. La rejilla tiene solo los 20 platillos fijos: el indicador de marca se localiza
-  en cada vídeo (#18).
-- **Motivo**: con «sobre la línea o justo por fuera» quedaban ±10 cm de duda en `d`. A la
-  homografía no le afecta (en recta solo reescala `d`), pero a `solvePnP` (D-006) sí.
+- **Decisión**: por zona, 20 platillos fijos en los dos bordes de la calle, cada 5 m de −15 a 30 m,
+  **centrados sobre la línea**, que se quedan puestos toda la sesión. En curva se mide a lo largo
+  de la línea interior y cada platillo exterior va enfrente. Coordenadas: `s = 0` en el inicio de
+  la zona y positiva en el sentido de carrera; `d = 0` en el borde interior y positiva hacia fuera
+  (fila exterior en `d = 1,22`). El indicador de marca no forma parte de la rejilla: se mueve con
+  cada cambio de marca y se localiza en cada vídeo (#18). Los colores se configuran una vez por
+  pista (#27): como mucho 3, nunca blanco ni el color de la pista.
+- **Motivo**: puntos de suelo conocidos para pasar de píxeles a metros sin suponer la geometría de
+  la pista. Con los platillos «sobre la línea o justo por fuera» quedaban ±10 cm de duda en `d`,
+  que desvían la pose de la cámara. La pista de pruebas es azul y otras son rojas.
 - **Descartado**: platillo tocando la línea por fuera con su radio como parámetro.
 
-### D-016 · `sesion.json` con una lista de calibraciones
-2026-11-07 · #8, #13 · *ubicación sustituida por D-022*
+### D-04 · Calibración: homografía por tramos y pose con la forma de la pista
+#9, #10, #11, #12
 
-- **Decisión**: `sesion.json` (en la carpeta de los vídeos, generado por el programa) tiene un
-  campo `version` y una lista de calibraciones. Cada una guarda `id`, `creada`, `video`,
-  `instante_ms`, `resolucion`, los parámetros de la rejilla, los píxeles de cada platillo (o
-  `null` si no se ve) y el nombre del PNG del fotograma de referencia, que se guarda al lado. Los
-  píxeles van en la resolución nativa y es un error aplicarlos a un vídeo de otra resolución. Qué
-  calibración usa cada vídeo lo calcula #13 en cada análisis; no se guarda.
+- **Decisión**: una homografía por cada tramo de 5 m (cuadrilátero entre pares interior/exterior
+  consecutivos) para pasar de píxel a `(s, d)`. Para los puntos que no están en el suelo (cadera
+  ≈ 1 m, testigo), #11 ajusta a la vez la pose y la focal de la cámara y la forma de la pista
+  (radio de la curva y punto donde empieza la recta; la recta es radio infinito) que mejor
+  reproyectan los 20 platillos. La validación da error si las filas están cambiadas: en el 4x100
+  se corre en sentido antihorario, así que la fila interior queda a la izquierda del sentido de
+  carrera, y una homografía reflejada (determinante negativo) delata el error de clic.
+- **Motivo**: la homografía por tramos funciona igual en recta y en curva. `solvePnP` necesita
+  posiciones cartesianas y en curva `s` es un arco; las tres zonas del 4x100 mezclan curva y
+  recta, y la focal del iPhone no se mide. Con 20 puntos para unos 9 parámetros hay margen.
+- **Descartado**: medir a mano la posición de la cámara; suponer la geometría oficial de la pista
+  (exige saber la calle); `solvePnP` con solo los 4 platillos del tramo cercano (pose ruidosa).
+
+### D-05 · `sesion.json` con una lista de calibraciones
+#8, #9, #13
+
+- **Decisión**: `sesion.json` está en la carpeta de la sesión, lo genera el programa y vale para
+  todos sus vídeos, también los de las subcarpetas por pareja (D-06). Tiene un campo `version` y
+  una lista de calibraciones; cada una guarda `id`, `creada`, `video`, `instante_ms`,
+  `resolucion`, los parámetros de la rejilla, el píxel de cada platillo (o `null` si no se ve) y
+  el nombre del PNG del fotograma de referencia (`calibracion_<id>.png`, al lado). Los píxeles van
+  en la resolución nativa y es un error aplicarlos a un vídeo de otra resolución. Qué calibración
+  usa cada vídeo lo calcula #13 en cada análisis, comparando features con los PNG; no se guarda.
+  `dataclasses` + `json`, validando en `__post_init__` como `InfoVideo`.
 - **Motivo**: si se golpea el trípode o se cambia de zona, se recalibra sin perder la calibración
-  de los vídeos anteriores. Guardar la rejilla en cada calibración evita que una sesión antigua se
-  lea con otros valores por defecto. El PNG le sirve a #13 para comparar features (sin #27 no se
-  pueden volver a detectar platillos) y permite revisar los clics a ojo.
-- **Descartado**: una sola calibración por carpeta que se sobrescribe; coordenadas normalizadas
-  (esconderían cambios de encuadre); tabla vídeo → calibración (se desfasa al borrar o renombrar
-  vídeos); pydantic (bastan `dataclasses` + `json`, como `InfoVideo`). La configuración de
-  colores de pista sale de #8 y pasa a #27, que es el único que la usa.
+  de los vídeos anteriores. Guardar la rejilla evita leer una sesión antigua con otros valores por
+  defecto. Sin #27 no se pueden volver a detectar platillos, así que #13 compara imágenes.
+- **Descartado**: una sola calibración que se sobrescribe; coordenadas normalizadas (esconderían
+  cambios de encuadre); tabla vídeo → calibración (se desfasa al borrar o renombrar vídeos);
+  pydantic.
 
-### D-017 · La fila interior queda a la izquierda del sentido de carrera
-2026-11-07 · #8, #9
-
-- **Decisión**: la rejilla incluye esta regla y la validación de la calibración da error si la
-  homografía sale reflejada (determinante negativo).
-- **Motivo**: en el 4x100 se corre en sentido antihorario y una cámara real no refleja la imagen.
-  Si alguien marca las filas al revés, `d` sale invertida y la pose de #11 es absurda; así se
-  detecta al calibrar.
-
-### D-018 · MVP en casa, entre intentos a partir de F6
-2026-11-07 · #46
-
-- **Decisión**: en el MVP (F3–F5) los vídeos se analizan después de la sesión y la marca
-  corregida se usa en la siguiente. El objetivo de F6 es analizar entre intentos, con un portátil
-  en la pista y 1–2 minutos por intento. En el MVP el vídeo llega por cable USB; para F6 se
-  quiere una página web servida por el portátil en la red local para subirlo desde Safari, si se
-  comprueba que iOS no lo recomprime (#7).
-- **Motivo**: la marca sirve más si se corrige en la misma sesión, pero con clics manuales no da
-  tiempo entre intentos. Fijarlo ahora condiciona la velocidad del análisis automático y si
-  YOLO-pose tiene que correr sin GPU.
-- **Descartado**: analizar en el propio iPhone.
-
-### D-019 · Objetivos de la entrega y cómo se juzga un intento
-2026-11-07 · #46, #17, #19, #21
-
-- **Decisión**: objetivos por defecto `L = 20 m` y `d_libre = 1,2 m`, que se pueden cambiar por
-  pareja. Se busca que el pase se haga entre 15 y 20 m. Cada intento se juzga con dos medidas: el
-  veredicto «pase en 15–20 m» y el tiempo del testigo en la zona, aproximado con las caderas
-  (desde que el que llega cruza `s = 0` hasta que el receptor cruza `s = 30`). La marca se
-  recomienda para la velocidad grabada y el resumen dice cuál es («marca para 8,6 m/s»); no se
-  extrapola a competición.
-- **Motivo**: el modelo de D-009 necesita los objetivos y no salen del vídeo. El tiempo en zona es
-  lo que gana carreras; el rango 15–20 m es el objetivo técnico del grupo.
-- **Descartado**: preguntar los objetivos en cada análisis (contra D-001); aprenderlos de los
-  mejores intentos; dar la marca para otra velocidad o analizar vídeos de competición.
-
-### D-020 · `v` media de la marca al pase y `tr` desde el pie en la marca
-2026-11-07 · #46, #15, #17, #18, #19
-
-- **Decisión**: en `marca = v·T − L + d_libre`, `v` es la velocidad media del que llega entre la
-  marca y el punto del pase. La velocidad de los últimos metros (#18) queda como dato informativo
-  para ver si llega frenando. `tr` va desde el primer apoyo del pie del que llega a la altura de
-  la marca o después hasta el primer movimiento del pie adelantado o la cadera del receptor; la
-  misma definición vale en F6, con los tobillos de YOLO-pose.
-- **Motivo**: `v·T` es la distancia que recorre el que llega en ese tramo, así que la media del
-  tramo es la que encaja con la fórmula; la velocidad final, más baja si va frenando, acortaría la
-  marca. El pie en la marca es a lo que reacciona el receptor.
-- **Descartado**: la cadera cruzando la `s` del indicador como inicio de `tr`.
-
-### D-021 · Clasificación de intentos y ajuste dentro de la sesión
-2026-11-07 · #46, #20, #21
-
-- **Decisión**: cada intento se clasifica como *válido*, *receptor frenó* (su velocidad cae antes
-  del pase), *sin pase o fuera de zona* o *problema de grabación* (#13). Solo los válidos
-  alimentan el modelo y el ajuste; en los otros se da la dirección (acercar o alejar la marca) y la
-  distancia del pase, sin cifra recomendada. El ajuste (#20) usa los intentos válidos de la misma
-  sesión y pareja, con más peso a los últimos, y da la cifra con su dispersión («28,5 pies,
-  4 intentos, ±1 pie»). Las sesiones anteriores se muestran solo como referencia.
-- **Motivo**: si el receptor frena para esperar, su `t_receptor(L)` no es el de una salida a tope
-  y la cifra saldría mal. Entre sesiones cambian el cansancio, la forma y el viento.
-- **Descartado**: combinar con menos peso las sesiones anteriores; usar solo el último intento.
-
-### D-022 · Pareja por subcarpeta y resultados junto al vídeo
-2026-11-07 · #46, #21, #28 · *sustituye la ubicación de `sesion.json` de D-016*
+### D-06 · Pareja por subcarpeta y resultados junto al vídeo
+#21, #28
 
 - **Decisión**: dentro de la carpeta de la sesión, una subcarpeta por pareja
   (`data/sesiones/2026-11-20/ATL1-ATL2/`), que se ordena después viendo las miniaturas; los vídeos
-  sueltos en la raíz son de pareja desconocida. `--pareja` fuerza la pareja. `ATL1-ATL2` quiere
-  decir que ATL1 entrega a ATL2, y la marca va en pies del receptor. `sesion.json` está en la raíz
-  de la sesión y vale para todas las subcarpetas. Cada vídeo tiene al lado su
-  `IMG_xxxx.resultado.json` con las métricas, la clasificación, la calibración usada y los clics
-  manuales; #20 y #28 recorren las carpetas, sin base de datos.
-- **Motivo**: apuntar en pista quién corre cada intento sería volver a la hoja de registro que se
-  descartó en D-001. Guardar los clics evita repetirlos al volver a analizar.
+  sueltos en la raíz son de pareja desconocida y `--pareja` la fuerza. `ATL1-ATL2` quiere decir
+  que ATL1 entrega a ATL2. Cada vídeo tiene al lado su `IMG_xxxx.resultado.json` con las
+  métricas, la clasificación, la calibración usada y los clics manuales; el ajuste (#20) y el
+  historial (#28) recorren las carpetas.
+- **Motivo**: apuntar en pista quién corre cada intento sería volver a la hoja de registro (D-01).
+  Guardar los clics evita repetirlos al volver a analizar.
 - **Descartado**: SQLite para el historial; un JSON de eventos separado del de resultados.
 
-### D-023 · Clics del MVP: una lista cerrada de eventos
-2026-11-07 · #46, #15, #16
+### D-07 · Clics del MVP: una lista cerrada de eventos
+#15, #16
 
-- **Decisión**: en el MVP cada vídeo pide unos 10 clics, en orden, cada uno sobre el pie o el
-  testigo en un fotograma (la homografía da su `s`): indicador y pie adelantado del receptor
-  parado; pie del que llega en la marca; primer movimiento del receptor; pase (fotograma y
-  posición del testigo); el que llega cruzando `s = 0`; el receptor cruzando 20 y 30 m; y dos o
-  tres posiciones del receptor antes del pase. Las trayectorias completas llegan con F6.
-- **Motivo**: con esos puntos salen todas las medidas del modelo (D-019, D-020, D-021) sin marcar a
-  los atletas fotograma a fotograma.
+- **Decisión**: cada vídeo pide unos 10 clics, en orden, cada uno sobre el pie o el testigo en un
+  fotograma (la homografía da su `s`): indicador y pie adelantado del receptor parado; pie del que
+  llega en la marca; primer movimiento del receptor; pase (inicio y fin, con la posición del
+  testigo); el que llega cruzando `s = 0`; el receptor cruzando 20 y 30 m; y dos o tres posiciones
+  del receptor antes del pase. Las trayectorias completas llegan con F6.
+- **Motivo**: con esos puntos salen todas las medidas de D-08 y D-09 sin marcar a los atletas
+  fotograma a fotograma.
 
-### D-024 · «Pista vacía» quiere decir sin el que llega
-2026-11-07 · #48, #9, #13
+### D-08 · Modelo de la marca de salida
+#17, #18, #19
 
-- **Decisión**: en los primeros fotogramas de cada vídeo el receptor puede estar ya en su sitio,
-  sin pisar ni tapar platillos. Lo que no puede haber es el que llega. Si en el fotograma de
-  calibración el receptor tapa algún platillo, se salta (`null`, D-016). #13 compara features y
-  tolera que el receptor esté.
-- **Motivo**: el primer clic de D-023 es el pie del receptor parado, y pedirle que se aparte en
-  cada intento no es realista.
+- **Decisión**: `T = tr + t_receptor(L)` y `marca = v·T − L + d_libre`, con:
+  - `v`: velocidad media del que llega entre la marca y el punto del pase. La de los últimos
+    metros solo se muestra, para ver si llega frenando.
+  - `tr`: desde el primer apoyo del pie del que llega a la altura de la marca o después hasta el
+    primer movimiento del pie adelantado o la cadera del receptor (en F6, con los tobillos de
+    YOLO-pose).
+  - Objetivos por defecto `L = 20 m` y `d_libre = 1,2 m` (Ajustes), que se pueden cambiar por
+    pareja.
 
-### D-025 · Pose de la cámara y forma de la pista ajustadas a la vez
-2026-11-07 · #48, #11
+  La marca se da en pies del receptor si su pie está en `data/atletas.csv`; si no, en metros y en
+  pies de 30 cm. Se recomienda para la velocidad grabada y el resumen dice cuál es («para
+  8,6 m/s»). Caso de prueba: 9 m/s, 0,2 s, 2,9 s en 20 m → ≈ 9,1 m ≈ 30 pies.
+- **Motivo**: `v·T` es la distancia que recorre el que llega en ese tramo, así que la media del
+  tramo es la que encaja; la velocidad final, más baja si frena, acortaría la marca. El pie en la
+  marca es a lo que reacciona el receptor. Los objetivos no salen del vídeo.
+- **Descartado**: preguntar los objetivos en cada análisis (contra D-01) o aprenderlos de los
+  mejores intentos; la cadera cruzando el indicador como inicio de `tr`; dar la marca para otra
+  velocidad o analizar vídeos de competición.
 
-- **Decisión**: #11 busca a la vez la pose y la focal de la cámara y la forma de la pista (radio de
-  la curva y punto donde empieza la recta; la recta es el caso de radio infinito) que mejor
-  reproyectan los 20 platillos. Tests sintéticos en recta, curva y zona mixta; #12 mide el error.
-- **Motivo**: `solvePnP` necesita posiciones cartesianas y en curva `s` es un arco. Las tres zonas
-  del 4x100 mezclan curva y recta, y la focal del iPhone no se mide en ningún sitio. Con 20
-  puntos para unos 9 parámetros hay margen.
-- **Descartado**: suponer la geometría oficial (exige saber la calle, contra D-001, y contradice
-  el «no suponer geometría» de #10); `solvePnP` con solo los 4 platillos del tramo cercano (pose
-  ruidosa).
+### D-09 · Juicio de cada intento y ajuste de la marca
+#17, #18, #20, #21
 
-### D-026 · Roles de los atletas con la calibración
-2026-11-07 · #48, #22
+- **Decisión**: cada intento se juzga con el veredicto «pase en 15–20 m» y con el tiempo del
+  testigo en la zona, aproximado con las caderas (desde que el que llega cruza `s = 0` hasta que
+  el receptor cruza `s = 30`). Se clasifica como *válido*, *receptor frenó* (su velocidad cae
+  antes del pase), *sin pase o fuera de zona* o *problema de grabación* (#13). Solo los válidos
+  alimentan el modelo; en los demás se da la dirección (acercar o alejar) y la distancia del pase,
+  sin cifra. El ajuste (#20) usa los intentos válidos de la misma sesión y pareja, con más peso a
+  los últimos, y da la cifra con su dispersión («28,5 pies, 4 intentos, ±1 pie»); las sesiones
+  anteriores se muestran solo como referencia.
+- **Motivo**: el tiempo en zona es lo que gana carreras y 15–20 m es el objetivo técnico del grupo.
+  Si el receptor frena para esperar, su `t_receptor(L)` no es el de una salida a tope. Entre
+  sesiones cambian el cansancio, la forma y el viento.
+- **Descartado**: combinar con menos peso las sesiones anteriores; usar solo el último intento.
 
-- **Decisión**: el receptor es la persona parada dentro de la calle (`0 ≤ d ≤ 1,22`) en los
-  primeros fotogramas; el que llega es quien entra corriendo en la calle desde atrás (`s < −15`, o
-  al menos por detrás de la marca). Se ignora a quien esté fuera de la calle (entrenador, ayudante,
-  otras calles).
-- **Motivo**: D-010 decía «parado cerca de la marca», pero la marca está unos 9 m por detrás del
-  receptor: es donde pisa el que llega.
+### D-10 · Detección automática con YOLO-pose
+#22, #23
+
+- **Decisión**: ultralytics (YOLO-pose + ByteTrack/BoT-SORT) en el extra `[deteccion]`, no en las
+  dependencias base. Roles con la calibración: el receptor es la persona parada dentro de la calle
+  (`0 ≤ d ≤ 1,22`) en los primeros fotogramas; el que llega es quien entra corriendo en la calle
+  desde atrás; se ignora a quien esté fuera de la calle. Trayectorias suavizadas con
+  Savitzky-Golay (o Kalman) sobre `s`.
+- **Motivo**: la detección pesa mucho para quien solo use el MVP manual. Con `(s, d)` los roles
+  salen sin preguntar y se descarta al entrenador y a otras calles.
+
+### D-11 · Herramientas del repo
+#41, #43
+
+- **Decisión**: las skills `antislop`, `antislop-code` y `antislop-copywriting` (v3.2.25, MIT) se
+  copian a `.claude/skills/`, en modo *during*. La sección «Depende de» de cada issue es la fuente
+  de las dependencias: `scripts/disponibilidad.py`, desde la Action `disponibilidad.yml`, crea las
+  dependencias nativas y rellena el campo «Disponibilidad» del Project (Lista / Bloqueada /
+  Hecha). El flujo de ramas, commits y PRs está en [CONTRIBUTING.md](../CONTRIBUTING.md).
+- **Motivo**: evitar textos con pinta de IA en código, docs e issues, y ver de un vistazo qué se
+  puede empezar.
+- **Coste**: la Action necesita un token personal en el secret `PROJECT_TOKEN`, que hay que
+  renovar cuando caduque.
+- **Descartado**: instalar el plugin completo de antislop (trae skills de UI y un servidor MCP que
+  el proyecto no usa).
 
 ## 4. Ajustes y parámetros
 
@@ -352,24 +261,25 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
 
 | Parámetro | Valor | Dónde / por qué |
 |---|---|---|
-| Frecuencia de grabación | 60 fps (aviso si < 50 fps reales) | D-003, `video.py` |
+| Frecuencia de grabación | 60 fps (aviso si < 50 fps reales) | D-02, `video.py` |
 | Resolución | 4K60 HEVC; 1080p60 «Más compatible» si no se lee | protocolo §4 |
-| Platillos por zona | 21 (10 + 10 + indicador) | D-004 |
-| Separación de platillos | 5 m, de −15 a 30 m | D-004 |
-| Posición de las filas | Centradas sobre la línea: `d = 0` (interior) y `d = 1,22` (exterior) | D-015 |
+| Platillos por zona | 21 (10 + 10 + indicador) | D-03 |
+| Separación de platillos | 5 m, de −15 a 30 m | D-03 |
+| Posición de las filas | Centradas sobre la línea: `d = 0` (interior) y `d = 1,22` (exterior) | D-03 |
 | Longitud de la zona | 30 m (+15 m previos con la marca) | protocolo §5 |
 | Ancho de calle | 1,22 m | protocolo §5 |
 | Altura de la cámara | Lo más alta posible; mínimo 2–3 m | protocolo §6 |
-| Pista vacía al empezar | 1–2 s | D-007 |
-| Colores pista azul | Interior amarillo, exterior verde flúor, límites/indicador naranja | D-008, #5 (por confirmar) |
-| Colores pista roja | Amarillo, verde flúor, azul | D-008 |
-| Altura de cadera para proyectar | ≈ 1 m | D-006 |
+| Pista vacía al empezar | 1–2 s | D-02 |
+| Colores pista azul | Interior amarillo, exterior verde flúor, límites/indicador naranja | D-03, #5 (por confirmar) |
+| Colores pista roja | Amarillo, verde flúor, azul | D-03 |
+| Altura de cadera para proyectar | ≈ 1 m | D-04 |
 | Ventana de velocidad | 0,3–0,5 s o por zancada | #23 |
-| Pie por defecto | 30 cm | D-009 |
-| Punto del pase objetivo (`L`) | 20 m | D-019 |
-| Zona objetivo del pase | 15–20 m | D-019 |
-| Distancia libre objetivo (`d_libre`) | 1,2 m | D-019 |
+| Pie por defecto | 30 cm | D-08 |
+| Punto del pase objetivo (`L`) | 20 m | D-08 |
+| Zona objetivo del pase | 15–20 m | D-09 |
+| Distancia libre objetivo (`d_libre`) | 1,2 m | D-08 |
 | Error de reproyección admisible | «unos cm» (umbral por fijar) | #10 |
+| Precisión objetivo de la calibración | 10–20 cm (leave-one-out) | #12 |
 
 ## 5. Preguntas abiertas
 
@@ -378,10 +288,10 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
 - ¿Los vídeos HEVC 4K60 del iPhone se leen bien con OpenCV en Windows? Comprobar con
   `relevos info` en la primera sesión (#7).
 - ¿Un vídeo subido desde Safari llega sin recomprimir y con sus fps? Si no, F6 se queda con el
-  cable USB (#7, D-018).
+  cable USB (#7, D-01).
 - ¿Caben los 45 m con la lente 1x desde algún sitio real de la pista? A unos 70° de campo hace
   falta estar a unos 35 m de la calle; si no se puede, 0,5x con la homografía por tramos y #12
-  decide si hace falta corregir la distorsión (#5, D-011).
+  decide si hace falta corregir la distorsión (#5, D-02).
 
 ## 6. Bitácora
 
@@ -400,3 +310,9 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
   en cuenta este documento en cualquier tarea. #14 pasa a depender de la prueba de encuadre (#5).
   «Pista vacía» sin el que llega (D-024), pose y forma de la pista ajustadas a la vez (D-025) y
   roles con la calibración (D-026).
+- **2026-11-07** — Decisiones simplificadas (#48): las 26 antiguas (D-001…D-026) se agrupan por tema
+  en D-01…D-11 y pasan a describir el estado vigente. Equivalencias: D-01 ← 001, 002, 018;
+  D-02 ← 003, 007, 011, 024; D-03 ← 004, 008, 015; D-04 ← 005, 006, 017, 025; D-05 ← 016 y
+  parte de 022; D-06 ← resto de 022; D-07 ← 023; D-08 ← 009, 020 y parte de 019; D-09 ← resto
+  de 019 y 021; D-10 ← 010, 026; D-11 ← 013, 014 (012 queda en `CONTRIBUTING.md`). Las líneas
+  anteriores de la bitácora usan la numeración antigua.
