@@ -74,6 +74,17 @@ sintéticos; no hay vídeos reales en el repo.
 - Mensajes de commit y títulos de PR: `[#<issue>] <descripción corta>` (imperativo, sin punto
   final). El hook commit-msg los rechaza si no; solo se permite squash merge, así que el título
   de la PR acaba siendo el commit en `main`. PR con `Closes #n`.
+- Estado en el Project: al empezar una issue, pasarla a «In Progress»; al abrir su PR, a
+  «In Review». El cambio a «In Review» va después de `gh pr create`: el flujo «Pull request
+  linked to issue» del Project puede devolverla a «In Progress» al enlazar la PR. «Done» lo pone
+  el flujo «Item closed» al cerrarse la issue. Con `gh`:
+  ```bash
+  ITEM=$(gh project item-list 1 --owner @me --limit 500 --format json \
+    --jq '.items[] | select(.content.number == <n>) | .id')
+  gh project item-edit --project-id PVT_kwHOD2BL4s4Bn8_X --id "$ITEM" \
+    --field-id PVTSSF_lAHOD2BL4s4Bn8_XzhmfPY0 --single-select-option-id <opción>
+  ```
+  Opciones del campo Status: `598481ae` = In Progress, `1fbc5e18` = In Review.
 - PRs dependientes se apilan con `gh stack` (extensión gh-stack).
 - Skills del proyecto en `.claude/skills/` (antislop: núcleo, comentarios de código y textos;
   ver su README). Aplican también a lo que se escribe en español. **Cárgalas siempre antes de

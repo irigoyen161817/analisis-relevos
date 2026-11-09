@@ -322,4 +322,5 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
   de 019 y 021; D-10 ← 010, 026; D-11 ← 013, 014 (012 queda en `CONTRIBUTING.md`). Las líneas
   anteriores de la bitácora usan la numeración antigua.
 - **2026-11-09** — Plugin superpowers en `.claude/settings.json`, con las reglas del repo en
-  `CLAUDE.md`; las PRs se revisan con `requesting-code-review` (#50, D-11).
+  `CLAUDE.md`; las PRs se revisan con `requesting-code-review` (#50, D-11). `CLAUDE.md` pide
+  mover cada issue a «In Progress» al empezarla y a «In Review» al abrir su PR.
