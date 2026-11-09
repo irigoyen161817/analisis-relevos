@@ -74,13 +74,38 @@ sintéticos; no hay vídeos reales en el repo.
 - Mensajes de commit y títulos de PR: `[#<issue>] <descripción corta>` (imperativo, sin punto
   final). El hook commit-msg los rechaza si no; solo se permite squash merge, así que el título
   de la PR acaba siendo el commit en `main`. PR con `Closes #n`.
+- Estado en el Project: al empezar una issue, pasarla a «In Progress»; al abrir su PR, a
+  «In Review». El cambio a «In Review» va después de `gh pr create`: el flujo «Pull request
+  linked to issue» del Project puede devolverla a «In Progress» al enlazar la PR. «Done» lo pone
+  el flujo «Item closed» al cerrarse la issue. Con `gh`:
+  ```bash
+  ITEM=$(gh project item-list 1 --owner @me --limit 500 --format json \
+    --jq '.items[] | select(.content.number == <n>) | .id')
+  gh project item-edit --project-id PVT_kwHOD2BL4s4Bn8_X --id "$ITEM" \
+    --field-id PVTSSF_lAHOD2BL4s4Bn8_XzhmfPY0 --single-select-option-id <opción>
+  ```
+  Opciones del campo Status: `598481ae` = In Progress, `1fbc5e18` = In Review.
 - PRs dependientes se apilan con `gh stack` (extensión gh-stack).
 - Skills del proyecto en `.claude/skills/` (antislop: núcleo, comentarios de código y textos;
   ver su README). Aplican también a lo que se escribe en español. **Cárgalas siempre antes de
   escribir o editar**, sin esperar a que se pidan: `antislop` + `antislop-code` para código y
   comentarios; `antislop` + `antislop-copywriting` para docs, issues, PRs y commits.
-- Para revisar una PR usar el subagente `revisor-pr` (`.claude/agents/revisor-pr.md`); no
-  publica comentarios en GitHub salvo que se pida.
+- Plugin [superpowers](https://github.com/obra/superpowers), declarado en `.claude/settings.json`
+  (Claude Code propone instalarlo al abrir el repo). Sus skills se siguen, salvo en lo que este
+  fichero diga otra cosa:
+  - Las ramas se integran siempre con PR y squash merge. En `finishing-a-development-branch`
+    no se ofrece el merge local a `main`.
+  - Specs y planes en español, en `docs/superpowers/`. Las decisiones siguen yendo a
+    `docs/decisiones.md`.
+  - `subagent-driven-development` y `dispatching-parallel-agents` solo cuando se pidan.
+  - Para cuestionar una idea, `grilling` (una pregunta cada vez); `brainstorming` para diseñar
+    algo nuevo.
+  - Las PRs se revisan con `requesting-code-review`. Su plantilla es genérica, así que el
+    prompt del revisor lleva siempre: la issue con sus criterios de aceptación,
+    `docs/decisiones.md`, las convenciones de `CONTRIBUTING.md` (formato de rama y título,
+    `Closes #n`), la regla de marcas de tiempo reales (nunca `índice / fps`), que no se suba
+    nada de `data/` ni vídeos, y ejecutar `ruff check .` y `pytest`. Los comentarios en GitHub
+    solo se publican si se piden.
 - El repo es **público**: vídeos, sesiones y nombres reales van solo en `data/` (ignorado por
   git); en el repo solo alias (ATL1, ATL2…). `.gitignore` también excluye `*.mp4`, `*.mov`, `*.pt`.
 - Protocolo de grabación en `docs/protocolo.md` (iPhone 4K60, sin hoja de registro).

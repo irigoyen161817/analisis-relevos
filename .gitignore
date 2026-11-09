@@ -21,6 +21,9 @@ data/
 # Modelos descargados
 *.pt
 
+# Worktrees de la skill using-git-worktrees (superpowers)
+.worktrees/
+
 # Editor / SO
 .vscode/
 .idea/

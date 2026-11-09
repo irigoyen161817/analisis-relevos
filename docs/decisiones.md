@@ -58,11 +58,11 @@ análisis en directo mientras se corre. Analizar entre intentos sí es objetivo 
 
 ## 1. Estado actual
 
-*Actualizado: 2026-11-07*
+*Actualizado: 2026-11-09*
 
 - **F1 Entorno**: terminada (#1, #2, #3, #4, #34, #37). Paquete, CLI, CI, hooks, plantillas,
-  `relevos info`. Añadidos después este documento, las skills de antislop (#41) y la pestaña
-  «Disponibilidad» del Project (#43).
+  `relevos info`. Añadidos después este documento, las skills de antislop (#41), la pestaña
+  «Disponibilidad» del Project (#43) y el plugin superpowers (#50).
 - **F2 Grabación**: protocolo hecho (#6). Pendiente probar colores y comprar platillos (#5) y la
   primera sesión de grabación (#7).
 - **Siguiente**: F3 Calibración, empezando por el modelo de la rejilla (#8) y la calibración manual
@@ -241,19 +241,24 @@ Formato: **D-nn · título** · issues. Qué se ha decidido (estado vigente), po
   salen sin preguntar y se descarta al entrenador y a otras calles.
 
 ### D-11 · Herramientas del repo
-#41, #43
+#41, #43, #50
 
 - **Decisión**: las skills `antislop`, `antislop-code` y `antislop-copywriting` (v3.2.25, MIT) se
-  copian a `.claude/skills/`, en modo *during*. La sección «Depende de» de cada issue es la fuente
+  copian a `.claude/skills/`, en modo *during*. El plugin superpowers (MIT) se instala completo,
+  declarado en `.claude/settings.json`; sus skills no se tocan y `CLAUDE.md` fija dónde manda el
+  repo (PR con squash merge, specs y planes en español en `docs/superpowers/`, subagentes en
+  paralelo solo si se piden). Las PRs se revisan con su `requesting-code-review`. La sección «Depende de» de cada issue es la fuente
   de las dependencias: `scripts/disponibilidad.py`, desde la Action `disponibilidad.yml`, crea las
   dependencias nativas y rellena el campo «Disponibilidad» del Project (Lista / Bloqueada /
   Hecha). El flujo de ramas, commits y PRs está en [CONTRIBUTING.md](../CONTRIBUTING.md).
-- **Motivo**: evitar textos con pinta de IA en código, docs e issues, y ver de un vistazo qué se
-  puede empezar.
+- **Motivo**: evitar textos con pinta de IA en código, docs e issues, ver de un vistazo qué se
+  puede empezar y que Claude trabaje con un método fijo (diseño antes de programar, TDD,
+  verificar antes de dar algo por hecho).
 - **Coste**: la Action necesita un token personal en el secret `PROJECT_TOKEN`, que hay que
   renovar cuando caduque.
 - **Descartado**: instalar el plugin completo de antislop (trae skills de UI y un servidor MCP que
-  el proyecto no usa).
+  el proyecto no usa). Con superpowers no se hace la copia selectiva, porque el hook que carga
+  `using-superpowers` al empezar cada sesión solo llega con el plugin.
 
 ## 4. Ajustes y parámetros
 
@@ -316,3 +321,8 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
   parte de 022; D-06 ← resto de 022; D-07 ← 023; D-08 ← 009, 020 y parte de 019; D-09 ← resto
   de 019 y 021; D-10 ← 010, 026; D-11 ← 013, 014 (012 queda en `CONTRIBUTING.md`). Las líneas
   anteriores de la bitácora usan la numeración antigua.
+- **2026-11-09** — Plugin superpowers en `.claude/settings.json`, con las reglas del repo en
+  `CLAUDE.md`; las PRs se revisan con `requesting-code-review` y se borra el subagente
+  `revisor-pr` (#50, D-11); `CLAUDE.md` fija qué contexto del repo lleva el revisor.
+  `CONTRIBUTING.md` y `CLAUDE.md` piden mover cada issue a «In Progress» al empezarla y a
+  «In Review» al abrir su PR. `.worktrees/` va a `.gitignore`.
