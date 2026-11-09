@@ -79,8 +79,18 @@ sintéticos; no hay vídeos reales en el repo.
   ver su README). Aplican también a lo que se escribe en español. **Cárgalas siempre antes de
   escribir o editar**, sin esperar a que se pidan: `antislop` + `antislop-code` para código y
   comentarios; `antislop` + `antislop-copywriting` para docs, issues, PRs y commits.
-- Para revisar una PR usar el subagente `revisor-pr` (`.claude/agents/revisor-pr.md`); no
-  publica comentarios en GitHub salvo que se pida.
+- Plugin [superpowers](https://github.com/obra/superpowers), declarado en `.claude/settings.json`
+  (Claude Code propone instalarlo al abrir el repo). Sus skills se siguen, salvo en lo que este
+  fichero diga otra cosa:
+  - Las ramas se integran siempre con PR y squash merge. En `finishing-a-development-branch`
+    no se ofrece el merge local a `main`.
+  - Specs y planes en español, en `docs/superpowers/`. Las decisiones siguen yendo a
+    `docs/decisiones.md`.
+  - `subagent-driven-development` y `dispatching-parallel-agents` solo cuando se pidan.
+  - Para cuestionar una idea, `grilling` (una pregunta cada vez); `brainstorming` para diseñar
+    algo nuevo.
+  - Las PRs se revisan con `requesting-code-review`. Los comentarios en GitHub solo se publican
+    si se piden.
 - El repo es **público**: vídeos, sesiones y nombres reales van solo en `data/` (ignorado por
   git); en el repo solo alias (ATL1, ATL2…). `.gitignore` también excluye `*.mp4`, `*.mov`, `*.pt`.
 - Protocolo de grabación en `docs/protocolo.md` (iPhone 4K60, sin hoja de registro).
