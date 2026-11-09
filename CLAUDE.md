@@ -100,8 +100,12 @@ sintéticos; no hay vídeos reales en el repo.
   - `subagent-driven-development` y `dispatching-parallel-agents` solo cuando se pidan.
   - Para cuestionar una idea, `grilling` (una pregunta cada vez); `brainstorming` para diseñar
     algo nuevo.
-  - Las PRs se revisan con `requesting-code-review`. Los comentarios en GitHub solo se publican
-    si se piden.
+  - Las PRs se revisan con `requesting-code-review`. Su plantilla es genérica, así que el
+    prompt del revisor lleva siempre: la issue con sus criterios de aceptación,
+    `docs/decisiones.md`, las convenciones de `CONTRIBUTING.md` (formato de rama y título,
+    `Closes #n`), la regla de marcas de tiempo reales (nunca `índice / fps`), que no se suba
+    nada de `data/` ni vídeos, y ejecutar `ruff check .` y `pytest`. Los comentarios en GitHub
+    solo se publican si se piden.
 - El repo es **público**: vídeos, sesiones y nombres reales van solo en `data/` (ignorado por
   git); en el repo solo alias (ATL1, ATL2…). `.gitignore` también excluye `*.mp4`, `*.mov`, `*.pt`.
 - Protocolo de grabación en `docs/protocolo.md` (iPhone 4K60, sin hoja de registro).

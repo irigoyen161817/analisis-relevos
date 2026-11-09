@@ -6,7 +6,9 @@
   (`feature`, `bug`, `docs`, `chore`, `research`) y de área (`calibracion`, `eventos`, `metricas`,
   `deteccion`, `visualizacion`, `infra`, `datos`).
 - `bloqueado-hardware` marca lo que depende de grabar en pista o comprar material.
-- El estado se sigue en el tablero del Project «Relevos».
+- El estado se sigue en el tablero del Project «Relevos». Al empezar una issue pasa a
+  «In Progress» y, después de abrir su PR, a «In Review»; «Done» lo pone el Project al cerrarse
+  la issue. Los comandos `gh` para cambiarlo están en `CLAUDE.md`.
 - Las dependencias se escriben en la sección «Depende de» de la issue (`- #n`). La Action
   `disponibilidad.yml` las convierte en dependencias de GitHub (*blocked by*) y rellena el campo
   «Disponibilidad»: **Lista** si no espera a ninguna issue abierta, **Bloqueada** si sí, **Hecha** si

@@ -323,5 +323,6 @@ Valores vigentes. Si cambian, se edita aquí y se explica en una decisión nueva
   anteriores de la bitácora usan la numeración antigua.
 - **2026-11-09** — Plugin superpowers en `.claude/settings.json`, con las reglas del repo en
   `CLAUDE.md`; las PRs se revisan con `requesting-code-review` y se borra el subagente
-  `revisor-pr` (#50, D-11). `CLAUDE.md` pide mover cada issue a «In Progress» al empezarla y a
-  «In Review» al abrir su PR.
+  `revisor-pr` (#50, D-11); `CLAUDE.md` fija qué contexto del repo lleva el revisor.
+  `CONTRIBUTING.md` y `CLAUDE.md` piden mover cada issue a «In Progress» al empezarla y a
+  «In Review» al abrir su PR. `.worktrees/` va a `.gitignore`.
